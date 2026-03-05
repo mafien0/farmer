@@ -1,8 +1,8 @@
 {
 	"bot": {
-		"host": "localhost",
+		"host": "play.windmc.su",
 		"port": 25565,
-		"username": "testbot",
+		"username": "mafien0",
 		"version": "1.21.11"
 	},
 	"base_reconnect_timeout": "5000",
