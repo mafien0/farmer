@@ -12,6 +12,5 @@ export function attachListeners(bot) {
 
 	bot.on("message", (jsonMsg) => {
 		parseChat(jsonMsg);
-		console.log(JSON.stringify(jsonMsg));
 	});
 }

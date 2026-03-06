@@ -2,15 +2,13 @@ import "dotenv/config";
 import { createRouter } from "./api/routes.js";
 
 import { connect } from "./mineflayer/bot.js";
-import { attachListeners } from "./mineflayer/listeners.js";
 
 // Create api
-const app = createRouter();
+const api = createRouter();
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+api.listen(port, () => {
 	console.log(`API is running on ${port}`);
 });
 
 // Initialize bot
-const bot = await connect();
-attachListeners(bot);
+const mineflayer = await connect();
