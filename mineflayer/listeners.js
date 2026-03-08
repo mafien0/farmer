@@ -2,12 +2,14 @@ import { updateBotStatus } from "../interface/status.js";
 import { parseChat } from "../interface/chat.js";
 
 export function attachListeners(bot) {
+	let statusInterval;
+
 	bot.once("spawn", () => {
-		const statusInterval = setInterval(() => updateBotStatus(bot), 10000);
+		statusInterval = setInterval(() => updateBotStatus(bot), 10000);
 	});
 
 	bot.once("end", () => {
-		clearInterval(bot._statusInterval);
+		clearInterval(statusInterval);
 	});
 
 	bot.on("message", (jsonMsg) => {

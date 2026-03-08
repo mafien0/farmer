@@ -1,7 +1,7 @@
 import { client } from "./client.js";
 
 function sendMessage(message) {
-	if (message) return;
+	if (!message) return;
 
 	client
 		.post("/message/send", { content: message })
