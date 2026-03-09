@@ -23,15 +23,11 @@ export async function connect() {
 			version: mfconfig.version || "1.21.11",
 		});
 		attachListeners(bot);
-		connectUpdate();
 
-		// reset counters to their default state
 		bot.on("spawn", () => {
+			// reset counters to their default state
 			reconnectAttempts = 0;
 			reconnectDelay = BASE_RECONNECT_TIMEOUT;
-		});
-		bot.on("end", () => {
-			scheduleReconnect();
 		});
 	} catch (error) {
 		console.error("Failed to create bot:", error.message);

@@ -12,12 +12,20 @@ export const connectUpdate = () => {
 	sendUpdateMsg(createSuccess("Connected", "Succesfully connected"));
 };
 
-export const kickUpdate = (info) => {
-	sendUpdateMsg(createError("Kick", info));
+export const disconnectUpdate = (info) => {
+	sendUpdateMsg(createError("disconnect", info));
 };
 
 export const reconnectUpdate = (info) => {
 	sendUpdateMsg(createWarning("Reconnect", info));
+};
+
+export const kickUpdate = (info) => {
+	sendUpdateMsg(createError("Kicked", info));
+};
+
+export const banUpdate = (info) => {
+	sendUpdateMsg(createError("Banned", info));
 };
 
 export const deathUpdate = (info) => {
