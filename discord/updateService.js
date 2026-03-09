@@ -6,7 +6,10 @@ import {
 	createWarning,
 } from "./embeds.js";
 
-const sendUpdateMsg = (message) => sendEmbedMsg(message, "updates");
+function sendUpdateMsg(message) {
+	if (!message) throw new Error("Message cannot be empty");
+	sendEmbedMsg(message, "updates");
+}
 
 export const connectUpdate = () => {
 	sendUpdateMsg(createSuccess("Connected", "Succesfully connected"));

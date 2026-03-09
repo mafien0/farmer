@@ -15,7 +15,7 @@ const status = {
 };
 
 function fetchStatus(bot) {
-	if (!bot) return;
+	if (!bot) throw new Error("Bot cannot be empty");
 
 	status.status = "Online";
 	status.name = bot.username;
@@ -64,12 +64,6 @@ export async function updateStatus(bot) {
 	} else {
 		// Bot is offline
 		status.status = "Offline";
-		status.name = "Bot";
-		status.health = null;
-		status.hunger = null;
-		status.ping = null;
-		status.coords = null;
-		status.dimension = null;
 	}
 
 	// If there is no status message, create a new one

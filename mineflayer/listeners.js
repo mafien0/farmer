@@ -20,6 +20,7 @@ export function attachListeners(bot) {
 
 	bot.once("end", () => {
 		clearInterval(statusInterval);
+		updateStatus();
 		// Schedule reconnect 1 second later so reconnect message will show after kick message
 		setTimeout(() => scheduleReconnect(), 1000);
 	});
