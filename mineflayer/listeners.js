@@ -1,17 +1,16 @@
-import { updateBotStatus } from "../interface/status.js";
-import { parseChat } from "../interface/chat.js";
-import { scheldueReconnect } from "./bot.js";
+import { parseChat } from "../discord/chatService.js";
+import { updateStatus } from "../discord/statusService.js";
 
 export function attachListeners(bot) {
 	let statusInterval;
 
 	bot.once("spawn", () => {
-		statusInterval = setInterval(() => updateBotStatus(bot), 10000);
+		updateStatus(bot);
+		statusInterval = setInterval(() => updateStatus(bot), 10000);
 	});
 
 	bot.once("end", () => {
 		clearInterval(statusInterval);
-		scheldueReconnect();
 	});
 
 	bot.on("message", (jsonMsg) => {
