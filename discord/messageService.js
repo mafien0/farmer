@@ -1,8 +1,8 @@
+import config from "../config.json" with { type: "json" };
+const channelIDs = config.discord.channels;
+
 // Hold a reference to the Discord client, set from index.js
 let client = null;
-
-import config from "../config.json" with { type: "json" };
-const channelID = config.discord.channels;
 
 // Channels will be filled on bot login
 const CHANNELS = {
@@ -47,9 +47,9 @@ async function getChannelById(id) {
 // Called after client login
 export async function initChannels() {
 	try {
-		CHANNELS.chat = await getChannelById(channelID.chat);
-		CHANNELS.status = await getChannelById(channelID.status);
-		CHANNELS.updates = await getChannelById(channelID.updates);
+		CHANNELS.chat = await getChannelById(channelIDs.chat);
+		CHANNELS.status = await getChannelById(channelIDs.status);
+		CHANNELS.updates = await getChannelById(channelIDs.updates);
 		console.log("All Discord channels initialized successfully");
 	} catch (error) {
 		console.error(`Failed to initialize channels: ${error.message}`);

@@ -59,3 +59,7 @@ export async function scheduleReconnect() {
 		connect();
 	}, delay);
 }
+
+export function sendBotMsg(msg) {
+	bot.chat(msg);
+}
