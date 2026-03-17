@@ -1,8 +1,7 @@
 import "dotenv/config";
 
 import { createBot } from "./discord/bot.js";
-import { setDiscordClient } from "./discord/messageService.js";
-import { initChannels } from "./discord/messageService.js";
+import { setDiscordClient, initChannels } from "./discord/messageService.js";
 import { createStatusMsg } from "./discord/statusService.js";
 
 import { connect } from "./mineflayer/bot.js";

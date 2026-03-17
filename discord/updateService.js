@@ -38,3 +38,7 @@ export const deathUpdate = (info) => {
 export const actionUpdate = (info) => {
 	sendUpdateMsg(createMessage("Action", info));
 };
+
+export const messageUpdate = (info) => {
+	sendUpdateMsg(createMessage("Message", info));
+};
