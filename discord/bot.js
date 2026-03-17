@@ -1,3 +1,4 @@
+import { discordLogger as logger } from "../logger.js";
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import { registerCommands, createCommandHandler } from "./commandsHandler.js";
 import { sendBotMsg } from "../mineflayer/bot.js";
@@ -15,12 +16,12 @@ export function createBot() {
 		],
 	});
 
-	client.once(Events.ClientReady, async (c) => {
-		console.log(`Discord bot logged in as ${c.user.tag}`);
+	client.once(Events.ClientReady, async (client) => {
+		logger.info(`bot logged in as ${client.user.tag}`);
 
 		const token = process.env.DISCORD_TOKEN;
 		if (token) {
-			await registerCommands(c.user.id, token);
+			await registerCommands(client.user.id, token);
 		}
 	});
 
@@ -28,20 +29,18 @@ export function createBot() {
 	client.on("messageCreate", (msg) => {
 		if (msg.channel.id === channelIDs.chat && !msg.author.bot) {
 			// Delete the message
-			msg.delete().catch(console.error);
+			msg.delete().catch(logger.error);
 
 			// Send it to minecraft
 			sendBotMsg(msg.content);
 
 			// Log
-			console.log(
-				`Send msg to minecraft: [${msg.author.username}] ${msg.content}`,
-			);
-			messageUpdate(`${msg.author.username} send: \n${msg.content}`);
+			logger.info("Received a message");
+			messageUpdate(`${msg.author.username} send: ${msg.content}`);
 		}
 	});
 
-	createCommandHandler(client).catch(console.error);
+	createCommandHandler(client).catch(logger.error);
 
 	return client;
 }

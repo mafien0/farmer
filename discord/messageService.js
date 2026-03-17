@@ -1,3 +1,4 @@
+import { discordLogger as logger } from "../logger.js";
 import config from "../config.json" with { type: "json" };
 const channelIDs = config.discord.channels;
 
@@ -38,7 +39,7 @@ async function getChannelById(id) {
 		// Return it
 		return channel;
 	} catch (error) {
-		console.error(`Failed to fetch channel ${id}: ${error.message}`);
+		logger.error(`Failed to fetch channel ${id}: ${error.message}`);
 		throw error;
 	}
 }
@@ -50,9 +51,9 @@ export async function initChannels() {
 		CHANNELS.chat = await getChannelById(channelIDs.chat);
 		CHANNELS.status = await getChannelById(channelIDs.status);
 		CHANNELS.updates = await getChannelById(channelIDs.updates);
-		console.log("All Discord channels initialized successfully");
+		logger.info("All Discord channels initialized successfully");
 	} catch (error) {
-		console.error(`Failed to initialize channels: ${error.message}`);
+		logger.error(`Failed to initialize channels: ${error.message}`);
 		throw error;
 	}
 }
@@ -67,10 +68,10 @@ export async function sendMsg(msg, channelType = "chat") {
 	}
 
 	try {
-		console.log(`Sending message to "${channelType}" channel`);
+		logger.info(`Sending message to "${channelType}" channel`);
 		return await CHANNELS[channelType].send(msg);
 	} catch (error) {
-		console.error(
+		logger.error(
 			`Failed to send message to "${channelType}" channel: ${error.message}`,
 		);
 		throw error;
@@ -99,7 +100,7 @@ export async function wipeMessages(channelType = "status", limit = 100) {
 
 	// Delete old messages one-by-one
 	for (const [, msg] of old) {
-		await msg.delete().catch(console.error);
+		await msg.delete().catch(logger.error);
 		// With .5 second delay to prevent rate limiting
 		await new Promise((resolve) => setTimeout(resolve, 500));
 	}

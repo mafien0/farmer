@@ -1,3 +1,4 @@
+import { mineflayerLogger as logger } from "../logger.js";
 import mineflayer from "mineflayer";
 import { attachListeners } from "./listeners.js";
 
@@ -30,7 +31,7 @@ export async function connect() {
 			reconnectDelay = BASE_RECONNECT_TIMEOUT;
 		});
 	} catch (error) {
-		console.error("Failed to create bot:", error.message);
+		logger.error("Failed to create bot:", error.message);
 		scheduleReconnect();
 	}
 }
@@ -41,7 +42,7 @@ export async function scheduleReconnect() {
 
 	reconnectAttempts += 1;
 	if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
-		console.error("Max reconnect attempts reached, exiting...");
+		logger.error("Max reconnect attempts reached, exiting...");
 		process.exit(1);
 	}
 
