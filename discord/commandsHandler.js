@@ -1,3 +1,4 @@
+import { discordLogger as logger } from "../logger.js";
 import { REST, Routes } from "discord.js";
 import fs from "fs";
 import path from "path";
@@ -20,7 +21,7 @@ export async function loadCommands() {
 		if ("data" in command && "execute" in command) {
 			commands.push(command.data.toJSON());
 		} else {
-			console.log(
+			logger.warn(
 				`The command at ${filePath} is missing a required "data" or "execute" property.`,
 			);
 		}
@@ -34,7 +35,9 @@ export async function registerCommands(clientId, token) {
 	const rest = new REST().setToken(token);
 
 	try {
-		console.log(`Started refreshing ${commands.length} app commands`);
+		logger.info(
+			`Started refreshing ${commands.length} app commands`,
+		);
 
 		const guildID = process.env.DISCORD_GUILD_ID;
 		if (!guildID) {
@@ -45,9 +48,11 @@ export async function registerCommands(clientId, token) {
 			body: commands,
 		});
 
-		console.log(`Successfully reloaded ${commands.length} app commands`);
+		logger.info(
+			`Successfully reloaded ${commands.length} app commands`,
+		);
 	} catch (error) {
-		console.error(error);
+		logger.error(`${error}`);
 	}
 }
 
@@ -65,14 +70,14 @@ export async function createCommandHandler(client) {
 
 			if ("data" in command && "execute" in command) {
 				commands.set(command.data.name, command);
-				console.log(`Loaded command: ${command.data.name}`);
+				logger.info(`Loaded command: ${command.data.name}`);
 			} else {
-				console.log(
-					`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+				logger.warn(
+					`The command at ${filePath} is missing a required "data" or "execute" property.`,
 				);
 			}
 		} catch (error) {
-			console.error(`Failed to load command from ${filePath}:`, error);
+			logger.error(`Failed to load command from ${filePath}:`, error);
 		}
 	}
 
@@ -82,7 +87,7 @@ export async function createCommandHandler(client) {
 		const command = commands.get(interaction.commandName);
 
 		if (!command) {
-			console.error(
+			logger.error(
 				`No command matching ${interaction.commandName} was found.`,
 			);
 			return;
@@ -91,9 +96,8 @@ export async function createCommandHandler(client) {
 		try {
 			await command.execute(interaction);
 		} catch (error) {
-			console.error(
-				`Error executing command ${interaction.commandName}:`,
-				error,
+			logger.error(
+				`Error executing command ${interaction.commandName}:\n${error}`,
 			);
 
 			if (interaction.replied || interaction.deferred) {
@@ -110,6 +114,8 @@ export async function createCommandHandler(client) {
 		}
 	});
 
-	console.log(`Command handler ready with ${commands.size} commands`);
+	logger.info(
+		`Command handler ready with ${commands.size} commands`,
+	);
 	return commands;
 }

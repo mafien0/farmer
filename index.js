@@ -1,5 +1,7 @@
 import "dotenv/config";
 
+import { mineflayerLogger, discordLogger } from "./logger.js";
+
 import { createBot } from "./discord/bot.js";
 import { setDiscordClient, initChannels } from "./discord/messageService.js";
 import { createStatusMsg } from "./discord/statusService.js";
@@ -14,9 +16,9 @@ if (!token) {
 	throw new Error("DISCORD_TOKEN environment variable is required");
 }
 
-console.log("-".repeat(10) + "\nConnecting Discord bot\n");
+discordLogger.info("Connecting to Discord");
 discord.login(token).then(() => {
-	console.log("Discord bot is up");
+	discordLogger.info("bot is up");
 	setDiscordClient(discord);
 	initChannels().then(() => {
 		createStatusMsg();
@@ -25,6 +27,6 @@ discord.login(token).then(() => {
 
 // Initialize bot
 setTimeout(async () => {
-	console.log("-".repeat(10) + "\nConnecting Mineflayer\n");
+	mineflayerLogger.info("Connecting");
 	const mineflayer = await connect();
 }, 5000);

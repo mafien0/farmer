@@ -1,3 +1,4 @@
+import { discordLogger as logger } from "../logger.js";
 import { createStatusEmbed } from "./embeds.js";
 import { sendEmbedMsg, wipeMessages } from "./messageService.js";
 
@@ -36,7 +37,7 @@ export async function createStatusMsg() {
 	try {
 		await wipeMessages("status");
 	} catch (error) {
-		console.error(
+		logger.error(
 			`Failed to wipe messages in status channel: ${error.message}`,
 		);
 		// No need to throw it back
@@ -49,10 +50,10 @@ export async function createStatusMsg() {
 		const msg = await sendEmbedMsg(embed, "status");
 		statusMsg = msg;
 
-		console.log(`Sent initial status message ${msg.id}`);
+		logger.info(`Sent initial status message ${msg.id}`);
 		return msg;
 	} catch (error) {
-		console.error(`Failed to create status message: ${error.message}`);
+		logger.error(`Failed to create status message: ${error.message}`);
 		throw error;
 	}
 }
@@ -77,6 +78,6 @@ export async function updateStatus(bot) {
 		const embed = createStatusEmbed(status);
 		await statusMsg.edit({ embeds: [embed] });
 	} catch (error) {
-		console.error(`Failed to update status message: ${error.message}`);
+		logger.error(`Failed to update status message: ${error.message}`);
 	}
 }

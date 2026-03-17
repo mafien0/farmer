@@ -1,3 +1,4 @@
+import { mineflayerLogger as logger } from "../logger.js";
 import { parseChat } from "../discord/chatService.js";
 import { updateStatus } from "../discord/statusService.js";
 
@@ -14,6 +15,7 @@ export function attachListeners(bot) {
 
 	bot.once("spawn", () => {
 		updateStatus(bot);
+		logger.info("Connected");
 		connectUpdate();
 		statusInterval = setInterval(() => updateStatus(bot), 10000);
 	});
@@ -29,8 +31,8 @@ export function attachListeners(bot) {
 		// Kick messages are really stupid, and return whatever it wants, so we need to check for each case
 		const reason =
 			typeof rawReason === "string" ? JSON.parse(rawReason) : rawReason;
-		console.log(reason);
-		console.log(typeof rawReason);
+		logger.debug(reason);
+		logger.debug(typeof rawReason);
 
 		const value = reason.value?.translate?.value ?? reason.translate;
 		const withArr = reason.value?.with ?? reason.with;
