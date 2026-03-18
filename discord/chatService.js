@@ -1,3 +1,4 @@
+import { mineflayerLogger as logger } from "../logger.js";
 import { sendMsg } from "./messageService.js";
 
 function extractTextFromObject(obj) {
@@ -75,5 +76,7 @@ export function parseChat(message) {
 		})
 		.join(" ");
 
-	sendMsg(formatted || fullText);
+	const msg = formatted || fullText;
+	logger.info(`Received a message: ${msg}`);
+	sendMsg(msg);
 }
