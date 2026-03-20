@@ -31,6 +31,7 @@ export function attachListeners(bot) {
 		// Kick messages are really stupid, and return whatever it wants, so we need to check for each case
 		const reason =
 			typeof rawReason === "string" ? JSON.parse(rawReason) : rawReason;
+
 		logger.debug(reason);
 		logger.debug(typeof rawReason);
 

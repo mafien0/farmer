@@ -22,6 +22,7 @@ export async function connect() {
 			port: mfconfig.port || 25565,
 			username: mfconfig.username || "bot",
 			version: mfconfig.version || "1.21.11",
+			physicsEnabled: true,
 		});
 		attachListeners(bot);
 
