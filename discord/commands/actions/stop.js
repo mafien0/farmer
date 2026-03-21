@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "discord.js";
-import { stop } from "../../mineflayer/actions.js";
+import { stop } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("stop")

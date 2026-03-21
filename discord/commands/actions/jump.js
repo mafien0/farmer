@@ -1,21 +1,21 @@
 import { SlashCommandBuilder } from "discord.js";
-import { useItem } from "../../mineflayer/actions.js";
+import { jump } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
-	.setName("useitem")
-	.setDescription("Makes bot use currently holding item")
+	.setName("jump")
+	.setDescription("Makes bot jump")
 	.addBooleanOption((option) =>
 		option
 			.setName("continuously")
-			.setDescription("Use item continuously or not")
+			.setDescription("Run action continuously or not")
 			.setRequired(true),
 	);
 
 export async function execute(interaction) {
 	const continuously = interaction.options.getBoolean("continuously");
-	if (useItem(continuously)) {
-		await interaction.reply("Using the item");
+	if (jump(continuously)) {
+		await interaction.reply("Jumping");
 	} else {
-		await interaction.reply("Couldn't use the item");
+		await interaction.reply("Something went wromg");
 	}
 }

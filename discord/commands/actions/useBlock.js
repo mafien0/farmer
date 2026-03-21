@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "discord.js";
-import { useBlock } from "../../mineflayer/actions.js";
+import { useBlock } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("useblock")
