@@ -18,8 +18,8 @@ export function createBot() {
 	});
 
 	client.on("guildCreate", async (guild) => {
-		logger.info(`Bot joined a new server ${guild.name}; ${guild.id}`);
-		await serverInit(guild);
+		logger.info(`Bot joined a new server: ${guild.name}; ${guild.id}`);
+		await serverInit(client, guild);
 	});
 
 	client.once(Events.ClientReady, async (client) => {
