@@ -10,6 +10,7 @@ import {
 function sendUpdateMsg(message) {
 	if (!message) {
 		logger.error("in sendUpdateMsg(): `message` cannot be empty");
+		return;
 	}
 	sendEmbedMsg(message, "updates");
 }

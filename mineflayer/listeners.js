@@ -11,23 +11,24 @@ import {
 import { scheduleReconnect } from "./bot.js";
 
 export function attachListeners(bot) {
-	let statusInterval;
+	let updateInterval;
 
 	bot.once("spawn", () => {
 		updateStatus(bot);
 		logger.info("Connected");
 		connectUpdate();
-		statusInterval = setInterval(() => updateStatus(bot), 10000);
+		updateInterval = setInterval(() => updateStatus(bot), 10000);
 	});
 
 	bot.once("end", () => {
-		clearInterval(statusInterval);
+		clearInterval(updateInterval);
 		updateStatus();
 		// Schedule reconnect 1 second later so reconnect message will show after kick message
 		setTimeout(() => scheduleReconnect(), 1000);
 	});
 
 	bot.on("kicked", (rawReason) => {
+		console.log(rawReason);
 		// Kick messages are really stupid, and return whatever it wants, so we need to check for each case
 		const reason =
 			typeof rawReason === "string" ? JSON.parse(rawReason) : rawReason;
