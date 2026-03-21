@@ -32,7 +32,7 @@ export async function connect() {
 			reconnectDelay = BASE_RECONNECT_TIMEOUT;
 		});
 	} catch (error) {
-		logger.error("Failed to create bot:", error.message);
+		logger.error(`Failed to create bot: ${error.message}`);
 		scheduleReconnect();
 	}
 }

@@ -16,7 +16,10 @@ const status = {
 };
 
 function fetchStatus(bot) {
-	if (!bot) throw new Error("Bot cannot be empty");
+	if (!bot) {
+		logger.error("in fetchStatus(): `bot` cannot be empty");
+		return;
+	}
 
 	status.status = "Online";
 	status.name = bot.username;
@@ -37,11 +40,7 @@ export async function createStatusMsg() {
 	try {
 		await wipeMessages("status");
 	} catch (error) {
-		logger.error(
-			`Failed to wipe messages in status channel: ${error.message}`,
-		);
-		// No need to throw it back
-		// Its not that of an issue if there is old messages in the channel
+		logger.error(`Failed to wipe messages in status channel: ${error.message}`);
 	}
 
 	// Send a new one
@@ -54,7 +53,7 @@ export async function createStatusMsg() {
 		return msg;
 	} catch (error) {
 		logger.error(`Failed to create status message: ${error.message}`);
-		throw error;
+		return;
 	}
 }
 
