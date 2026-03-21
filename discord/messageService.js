@@ -15,14 +15,24 @@ const CHANNELS = {
 // Get discord client generated in `../index.js`
 // Called after client login
 export function setDiscordClient(discordClient) {
-	if (!discordClient) throw new Error("Discord client is required");
+	if (!discordClient) {
+		logger.error("in setDiscordClient(): No message provided");
+		return;
+	}
+
 	client = discordClient;
 }
 
 // Util function to get channel by its id
 async function getChannelById(id) {
-	if (!id) throw new Error("No channel ID provided");
-	if (!client) throw new Error("Discord client is not initialized");
+	if (!id) {
+		logger.error("In getChannelById(): No id provided");
+		return;
+	}
+	if (!client) {
+		logger.error("in getChannelById(): Client is initialized");
+		return;
+	}
 
 	try {
 		// Fetch channel
@@ -30,17 +40,21 @@ async function getChannelById(id) {
 
 		// Validate if channel exists and is it text channel
 		if (!channel) {
-			throw new Error(`Channel not found for ID: ${id}`);
+			logger.error(`In getChannelById(): Channel not found for ID: ${id}`);
+			return;
 		}
 		if (!channel.isTextBased()) {
-			throw new Error(`Channel ${id} is not text-based`);
+			logger.error(`In getChannelById(): Channel ${id} is not text-based`);
+			return;
 		}
 
 		// Return it
 		return channel;
 	} catch (error) {
-		logger.error(`Failed to fetch channel ${id}: ${error.message}`);
-		throw error;
+		logger.error(
+			`in getChannelByID(): Failed to fetch channel ${id}: ${error.message}`,
+		);
+		return;
 	}
 }
 
@@ -53,14 +67,19 @@ export async function initChannels() {
 		CHANNELS.updates = await getChannelById(channelIDs.updates);
 		logger.info("All Discord channels initialized successfully");
 	} catch (error) {
-		logger.error(`Failed to initialize channels: ${error.message}`);
-		throw error;
+		logger.error(
+			`in initChannels(): Failed to initialize channels: ${error.message}`,
+		);
+		return;
 	}
 }
 
 // Send messages function
 export async function sendMsg(msg, channelType = "chat") {
-	if (!msg) throw new Error("No message provided");
+	if (!msg) {
+		logger.error("in sendMsg(): Tried to send a message, but to msg provided");
+		return;
+	}
 
 	// If channels not yet initialized
 	if (!CHANNELS[channelType]) {
@@ -72,9 +91,9 @@ export async function sendMsg(msg, channelType = "chat") {
 		return await CHANNELS[channelType].send(msg);
 	} catch (error) {
 		logger.error(
-			`Failed to send message to "${channelType}" channel: ${error.message}`,
+			`in sendMsg(): Failed to send message to "${channelType}" channel: ${error.message}`,
 		);
-		throw error;
+		return;
 	}
 }
 export const sendEmbedMsg = async (msg, channelType = "chat") =>

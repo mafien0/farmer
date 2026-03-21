@@ -35,9 +35,7 @@ export async function registerCommands(clientId, token) {
 	const rest = new REST().setToken(token);
 
 	try {
-		logger.info(
-			`Started refreshing ${commands.length} app commands`,
-		);
+		logger.info(`Started refreshing ${commands.length} app commands`);
 
 		const guildID = process.env.DISCORD_GUILD_ID;
 		if (!guildID) {
@@ -48,9 +46,7 @@ export async function registerCommands(clientId, token) {
 			body: commands,
 		});
 
-		logger.info(
-			`Successfully reloaded ${commands.length} app commands`,
-		);
+		logger.info(`Successfully reloaded ${commands.length} app commands`);
 	} catch (error) {
 		logger.error(`${error}`);
 	}
@@ -87,9 +83,7 @@ export async function createCommandHandler(client) {
 		const command = commands.get(interaction.commandName);
 
 		if (!command) {
-			logger.error(
-				`No command matching ${interaction.commandName} was found.`,
-			);
+			logger.error(`No command matching ${interaction.commandName} was found.`);
 			return;
 		}
 
@@ -114,8 +108,6 @@ export async function createCommandHandler(client) {
 		}
 	});
 
-	logger.info(
-		`Command handler ready with ${commands.size} commands`,
-	);
+	logger.info(`Command handler ready with ${commands.size} commands`);
 	return commands;
 }

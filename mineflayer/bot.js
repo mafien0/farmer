@@ -22,6 +22,7 @@ export async function connect() {
 			port: mfconfig.port || 25565,
 			username: mfconfig.username || "bot",
 			version: mfconfig.version || "1.21.11",
+			physicsEnabled: true,
 		});
 		attachListeners(bot);
 
@@ -31,7 +32,7 @@ export async function connect() {
 			reconnectDelay = BASE_RECONNECT_TIMEOUT;
 		});
 	} catch (error) {
-		logger.error("Failed to create bot:", error.message);
+		logger.error(`Failed to create bot: ${error.message}`);
 		scheduleReconnect();
 	}
 }

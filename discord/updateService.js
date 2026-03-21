@@ -8,7 +8,9 @@ import {
 } from "./embeds.js";
 
 function sendUpdateMsg(message) {
-	if (!message) throw new Error("Message cannot be empty");
+	if (!message) {
+		logger.error("in sendUpdateMsg(): `message` cannot be empty");
+	}
 	sendEmbedMsg(message, "updates");
 }
 

@@ -1,3 +1,4 @@
+import { discordLogger as logger } from "../logger.js";
 import { EmbedBuilder, resolveColor } from "discord.js";
 
 import config from "../config.json" with { type: "json" };
@@ -5,8 +6,14 @@ const colors = config.discord.embed.colors;
 
 // Embed generator
 function generateEmbed(header, content, color = null) {
-	if (!header) throw new Error("Header cannot be empty");
-	if (!content) throw new Error("Content cannot be empty");
+	if (!header) {
+		logger.error("in generateEmbed(): Header cannot be empty");
+		return;
+	}
+	if (!content) {
+		logger.error("in generateEmbed(): Content cannot be empty");
+		return;
+	}
 	if (!color) color = colors.white || "#ffffff";
 
 	return new EmbedBuilder()
@@ -27,7 +34,10 @@ export const createWarning = (header, content) =>
 
 // Status embed
 export function createStatusEmbed(status) {
-	if (!status) throw new Error("No status specified");
+	if (!status) {
+		logger.error("in createStatusEmbed(): `status` cannot be empty");
+		return;
+	}
 	const color =
 		status.status.toLowerCase() === "online" ? colors.green : colors.gray;
 	const time = Math.floor(Date.now() / 1000);
