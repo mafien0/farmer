@@ -7,8 +7,11 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
 	if (useBlock()) {
-		await interaction.reply("Using the block");
+		await interaction.reply({ content: "Using the block", ephemeral: true });
 	} else {
-		await interaction.reply("Couldn't use the block");
+		await interaction.reply({
+			content: "Couldn't use the block",
+			ephemeral: true,
+		});
 	}
 }

@@ -15,9 +15,14 @@ export async function execute(interaction) {
 	let action = interaction.options.getBoolean("action") ?? true;
 
 	if (sneak(action)) {
-		if (action) await interaction.reply("Started sneaking");
-		else await interaction.reply("Stopped sneaking");
+		if (action)
+			await interaction.reply({ content: "Started sneaking", ephemeral: true });
+		else
+			await interaction.reply({ content: "Stopped sneaking", ephemeral: true });
 	} else {
-		await interaction.reply("Something went wrong");
+		await interaction.reply({
+			content: "Something went wrong",
+			ephemeral: true,
+		});
 	}
 }

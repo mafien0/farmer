@@ -27,8 +27,11 @@ export async function execute(interaction) {
 	const direction = interaction.options.getString("direction");
 	const continuously = interaction.options.getBoolean("continuously") ?? true;
 	if (move(direction, continuously)) {
-		await interaction.reply("Moving");
+		await interaction.reply({ content: "Moving", ephemeral: true });
 	} else {
-		await interaction.reply("Something went wrong");
+		await interaction.reply({
+			content: "Something went wrong",
+			ephemeral: true,
+		});
 	}
 }

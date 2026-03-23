@@ -7,8 +7,11 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
 	if (reconnect()) {
-		await interaction.reply("Reconnecting...");
+		await interaction.reply({ content: "Reconnected", ephemeral: true });
 	} else {
-		await interaction.reply("Something went wrong");
+		await interaction.reply({
+			content: "Something went wrong",
+			ephemeral: true,
+		});
 	}
 }

@@ -7,8 +7,11 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
 	if (attack()) {
-		await interaction.reply("punching the thing");
+		await interaction.reply({ content: "Punching the thing", ephemeral: true });
 	} else {
-		await interaction.reply("Couldn't punch the thing");
+		await interaction.reply({
+			content: "Couldn't punch the thing",
+			ephemeral: true,
+		});
 	}
 }

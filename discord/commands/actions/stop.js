@@ -7,8 +7,14 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
 	if (stop()) {
-		await interaction.reply("Succesfully stoped all the actions");
+		await interaction.reply({
+			content: "Succesfully stoped all the actions",
+			ephemeral: true,
+		});
 	} else {
-		await interaction.reply("Something went wrong");
+		await interaction.reply({
+			content: "Something went wrong",
+			ephemeral: true,
+		});
 	}
 }

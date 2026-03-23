@@ -7,8 +7,12 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
 	if (connect()) {
-		await interaction.reply("Conecting...");
+		await interaction.reply({ content: "Connected", ephemeral: true });
 	} else {
-		await interaction.reply("Couldn't connect to the server, check the updates channel for more info");
+		await interaction.reply({
+			content:
+				"Couldn't connect to the server, check the updates channel for more info",
+			ephemeral: true,
+		});
 	}
 }

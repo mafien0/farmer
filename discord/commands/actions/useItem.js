@@ -14,8 +14,11 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction) {
 	const continuously = interaction.options.getBoolean("continuously");
 	if (useItem(continuously)) {
-		await interaction.reply("Using the item");
+		await interaction.reply({ content: "Using the item", ephemeral: true });
 	} else {
-		await interaction.reply("Couldn't use the item");
+		await interaction.reply({
+			content: "Couldn't use the item",
+			ephemeral: true,
+		});
 	}
 }
