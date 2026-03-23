@@ -24,9 +24,3 @@ discord.login(token).then(() => {
 		createStatusMsg();
 	});
 });
-
-// Initialize bot
-setTimeout(async () => {
-	mineflayerLogger.info("Connecting");
-	const mineflayer = await connect();
-}, 5000);

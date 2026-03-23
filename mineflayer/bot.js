@@ -2,7 +2,7 @@ import { mineflayerLogger as logger } from "../logger.js";
 import mineflayer from "mineflayer";
 import { attachListeners } from "./listeners.js";
 
-import { reconnectUpdate } from "../discord/updateService.js";
+import { disconnectUpdate, reconnectUpdate } from "../discord/updateService.js";
 
 import config from "../config.json" with { type: "json" };
 const mfconfig = config.mineflayer;
@@ -14,8 +14,10 @@ let reconnectDelay = BASE_RECONNECT_TIMEOUT;
 
 // Will be assigned/re-assigned on connect
 export let bot;
+let intentionalQuit = false;
 
 export async function connect() {
+	logger.info("Connecting...");
 	try {
 		bot = mineflayer.createBot({
 			host: mfconfig.host || "localhost",
@@ -35,6 +37,25 @@ export async function connect() {
 		logger.error(`Failed to create bot: ${error.message}`);
 		scheduleReconnect();
 	}
+}
+
+// Used in a discord command
+export function disconnect() {
+	logger.info("Quiting...");
+	bot.quit();
+	disconnectUpdate("Manual disconnect");
+	return true;
+}
+
+// Used in a discord command
+export function reconnect() {
+	logger.info("Reconnecting...");
+	// Try to end the bot
+	// It will automaticly reconnect because of `on("end")` listener
+	try {
+		bot.quit("reconnect");
+	} catch {}
+	return true;
 }
 
 let reconnectTimeout;

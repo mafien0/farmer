@@ -20,15 +20,21 @@ export function attachListeners(bot) {
 		updateInterval = setInterval(() => updateStatus(bot), 10000);
 	});
 
-	bot.once("end", () => {
+	bot.once("end", (reason) => {
 		clearInterval(updateInterval);
 		updateStatus();
+
+		// Do not reconnect for intentional quit
+		if (reason === "disconnect.quitting") {
+			return;
+		}
+
 		// Schedule reconnect 1 second later so reconnect message will show after kick message
 		setTimeout(() => scheduleReconnect(), 1000);
 	});
 
 	bot.on("kicked", (rawReason) => {
-		console.log(rawReason);
+		logger.debug(rawReason);
 		// Kick messages are really stupid, and return whatever it wants, so we need to check for each case
 		const reason =
 			typeof rawReason === "string" ? JSON.parse(rawReason) : rawReason;
