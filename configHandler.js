@@ -1,5 +1,7 @@
 import { commonLogger as logger } from "./logger.js";
 import fs from "fs";
+import { initChannels } from "./discord/messageService.js";
+import { createStatusMsg } from "./discord/statusService.js";
 import config from "./config.json" with { type: "json" };
 
 export function createConfigFile() {
@@ -25,9 +27,14 @@ export function writeConfig(UPDconfig) {
 	}
 }
 
-export function updateChannel(type, id) {
+export async function updateChannel(type, id) {
 	config.discord.channels[type] = id;
 	writeConfig(config);
+	await initChannels();
+
+	if (type === "status") {
+		await createStatusMsg();
+	}
 }
 
 export function updateGuildID(id) {
