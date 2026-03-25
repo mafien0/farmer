@@ -9,6 +9,7 @@ export function createConfigFile() {
 	}
 	// If no `config.json` - copy it from `default_config.json`
 	if (!fs.existsSync("./config.json")) {
+		logger.info("No config file is present, creating a new one");
 		fs.cpSync("./default_config.json", "./config.json");
 	}
 }
@@ -16,12 +17,22 @@ export function createConfigFile() {
 export function writeConfig(UPDconfig) {
 	try {
 		fs.writeFileSync("config.json", JSON.stringify(UPDconfig, null, "\t"));
-		logger.info("Updated channel IDs in config.json");
+		logger.info("Writen config.json");
 	} catch (error) {
 		logger.error(
 			`in writeConfig(): Failed to write config.json: ${error.message}`,
 		);
 	}
+}
+
+export function updateChannel(type, id) {
+	config.discord.channels[type] = id;
+	writeConfig(config);
+}
+
+export function updateGuildID(id) {
+	config.discord.guild = id;
+	writeConfig(config);
 }
 
 export function updateIP(ip) {

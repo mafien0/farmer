@@ -1,6 +1,10 @@
 import { discordLogger as logger } from "../logger.js";
 import config from "../config.json" with { type: "json" };
-const channelIDs = config.discord.channels;
+let channelIDs = config.discord.channels;
+
+export function updateChannelIDs() {
+	channelIDs = config.discord.channels;
+}
 
 // Hold a reference to the Discord client, set from index.js
 let client = null;
@@ -82,7 +86,7 @@ export async function sendMsg(msg, channelType = "chat") {
 	}
 
 	// If channels not yet initialized
-	if (!CHANNELS[channelType]) {
+	if (CHANNELS[channelType] && channelType !== "status") {
 		setTimeout(() => sendMsg(msg, channelType), 1000);
 	}
 

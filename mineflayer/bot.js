@@ -15,6 +15,7 @@ let reconnectDelay = BASE_RECONNECT_TIMEOUT;
 // Will be assigned/re-assigned on connect
 export let bot;
 export let shouldReconnect = true;
+let reconnectTimeout;
 
 export async function connect() {
 	logger.info("Connecting...");
@@ -30,6 +31,7 @@ export async function connect() {
 
 		bot.on("spawn", () => {
 			// reset counters to their default state
+			if (reconnectTimeout) clearTimeout(reconnectTimeout);
 			reconnectAttempts = 0;
 			reconnectDelay = BASE_RECONNECT_TIMEOUT;
 			shouldReconnect = true;
@@ -60,7 +62,6 @@ export function reconnect() {
 	return true;
 }
 
-let reconnectTimeout;
 export async function scheduleReconnect() {
 	if (reconnectTimeout) clearTimeout(reconnectTimeout);
 	if (!shouldReconnect) return;
