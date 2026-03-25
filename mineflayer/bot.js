@@ -2,7 +2,7 @@ import { mineflayerLogger as logger } from "../logger.js";
 import mineflayer from "mineflayer";
 import { attachListeners } from "./listeners.js";
 
-import { reconnectUpdate } from "../discord/updateService.js";
+import { disconnectUpdate, reconnectUpdate } from "../discord/updateService.js";
 
 import config from "../config.json" with { type: "json" };
 const mfconfig = config.mineflayer;
@@ -14,8 +14,15 @@ let reconnectDelay = BASE_RECONNECT_TIMEOUT;
 
 // Will be assigned/re-assigned on connect
 export let bot;
+export let shouldReconnect = true;
+let reconnectTimeout;
+
+export function isConnected() {
+	return bot?.entity != null;
+}
 
 export async function connect() {
+	logger.info("Connecting...");
 	try {
 		bot = mineflayer.createBot({
 			host: mfconfig.host || "localhost",
@@ -28,8 +35,10 @@ export async function connect() {
 
 		bot.on("spawn", () => {
 			// reset counters to their default state
+			if (reconnectTimeout) clearTimeout(reconnectTimeout);
 			reconnectAttempts = 0;
 			reconnectDelay = BASE_RECONNECT_TIMEOUT;
+			shouldReconnect = true;
 		});
 	} catch (error) {
 		logger.error(`Failed to create bot: ${error.message}`);
@@ -37,9 +46,29 @@ export async function connect() {
 	}
 }
 
-let reconnectTimeout;
+// Used in a discord command
+export function disconnect() {
+	logger.info("Quiting...");
+	shouldReconnect = false;
+	bot.quit();
+	disconnectUpdate("Manual disconnect");
+	return true;
+}
+
+// Used in a discord command
+export function reconnect() {
+	logger.info("Reconnecting...");
+	// Try to end the bot
+	// It will automaticly reconnect because of `on("end")` listener
+	try {
+		bot.quit("reconnect");
+	} catch {}
+	return true;
+}
+
 export async function scheduleReconnect() {
 	if (reconnectTimeout) clearTimeout(reconnectTimeout);
+	if (!shouldReconnect) return;
 
 	reconnectAttempts += 1;
 	if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
@@ -58,10 +87,11 @@ export async function scheduleReconnect() {
 	);
 
 	reconnectTimeout = setTimeout(() => {
-		connect();
+		if (shouldReconnect) connect();
 	}, delay);
 }
 
 export function sendBotMsg(msg) {
-	bot.chat(msg);
+	if (isConnected()) bot.chat(msg);
+	else logger.warn("Bot is not connected");
 }

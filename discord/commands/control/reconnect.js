@@ -1,0 +1,20 @@
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
+import { reconnect } from "../../../mineflayer/bot.js";
+
+export const data = new SlashCommandBuilder()
+	.setName("reconnect")
+	.setDescription("Makes bot dig a block he's currently looking at");
+
+export async function execute(interaction) {
+	if (reconnect()) {
+		await interaction.reply({
+			content: "Reconnected",
+			flags: MessageFlags.Ephemeral,
+		});
+	} else {
+		await interaction.reply({
+			content: "Something went wrong",
+			flags: MessageFlags.Ephemeral,
+		});
+	}
+}

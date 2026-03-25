@@ -1,7 +1,8 @@
 import { ChannelType } from "discord.js";
 import { discordLogger as logger } from "../logger.js";
+import { registerCommands } from "./commandsHandler.js";
+import { updateChannel, updateGuildID } from "../configHandler.js";
 import config from "../config.json" with { type: "json" };
-import fs from "fs";
 
 async function createCategory(guild, name) {
 	const category = await guild.channels.create({
@@ -22,7 +23,7 @@ async function createChannel(guild, parentID, name) {
 
 export async function serverInit(client, newGuild) {
 	if (process.env.DISCORD_GUILD_ID) {
-		config.discord.guild = process.env.DISCORD_GUILD_ID;
+		updateGuildID(process.env.DISCORD_GUILD_ID);
 	}
 	const guildID = config.discord.guild;
 	const guild = await client.guilds.fetch(newGuild.id).catch(() => null);
@@ -42,38 +43,24 @@ export async function serverInit(client, newGuild) {
 		return;
 	}
 
-	// Write guild ID update to config if changed via env
-	try {
-		fs.writeFileSync("config.json", JSON.stringify(config, null, "\t"));
-		logger.info("Updated guild ID in config.json");
-	} catch (error) {
-		logger.error(`Failed to write config.json: ${error.message}`);
+	// Register commands
+	const token = process.env.DISCORD_TOKEN;
+	if (token) {
+		// No need to await
+		registerCommands(client.user.id, token);
 	}
-
-	const channelConfig = config.discord.channels;
 
 	try {
 		// Init channel category
 		const category = await createCategory(guild, "farmer");
 
 		// Init channel and write their ID's into config
-		channelConfig.chat = await createChannel(guild, category, "chat");
-		channelConfig.status = await createChannel(guild, category, "status");
-		channelConfig.updates = await createChannel(guild, category, "updates");
+		updateChannel("chat", await createChannel(guild, category, "chat"));
+		updateChannel("status", await createChannel(guild, category, "status"));
+		updateChannel("updates", await createChannel(guild, category, "updates"));
 	} catch {
 		console.warn(
 			`Tried to create channels in ${guild.name}, but cannot(probably lack of permissions)`,
-		);
-		return;
-	}
-
-	// Write updated config back to file
-	try {
-		fs.writeFileSync("config.json", JSON.stringify(config, null, "\t"));
-		logger.info("Updated channel IDs in config.json");
-	} catch (error) {
-		logger.error(
-			`in serverInit(): Failed to write channel IDs to config.json: ${error.message}`,
 		);
 	}
 }

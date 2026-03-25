@@ -1,5 +1,5 @@
-import { SlashCommandBuilder } from "discord.js";
-import { move } from "../../mineflayer/actions.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
+import { move } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("move")
@@ -27,8 +27,14 @@ export async function execute(interaction) {
 	const direction = interaction.options.getString("direction");
 	const continuously = interaction.options.getBoolean("continuously") ?? true;
 	if (move(direction, continuously)) {
-		await interaction.reply("Moving");
+		await interaction.reply({
+			content: "Moving",
+			flags: MessageFlags.Ephemeral,
+		});
 	} else {
-		await interaction.reply("Something went wrong");
+		await interaction.reply({
+			content: "Something went wrong",
+			flags: MessageFlags.Ephemeral,
+		});
 	}
 }

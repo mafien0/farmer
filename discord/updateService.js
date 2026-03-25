@@ -10,6 +10,7 @@ import {
 function sendUpdateMsg(message) {
 	if (!message) {
 		logger.error("in sendUpdateMsg(): `message` cannot be empty");
+		return;
 	}
 	sendEmbedMsg(message, "updates");
 }
@@ -20,7 +21,7 @@ export const connectUpdate = () => {
 };
 
 export const disconnectUpdate = (info) => {
-	sendUpdateMsg(createError("disconnect", info));
+	sendUpdateMsg(createError("Disconnected", info));
 	logger.info(`Disconnect Update: ${info}`);
 };
 

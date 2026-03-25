@@ -1,5 +1,5 @@
-import { SlashCommandBuilder } from "discord.js";
-import { useItem } from "../../mineflayer/actions.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
+import { useItem } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("useitem")
@@ -14,8 +14,14 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction) {
 	const continuously = interaction.options.getBoolean("continuously");
 	if (useItem(continuously)) {
-		await interaction.reply("Using the item");
+		await interaction.reply({
+			content: "Using the item",
+			flags: MessageFlags.Ephemeral,
+		});
 	} else {
-		await interaction.reply("Couldn't use the item");
+		await interaction.reply({
+			content: "Couldn't use the item",
+			flags: MessageFlags.Ephemeral,
+		});
 	}
 }
