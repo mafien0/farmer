@@ -1,6 +1,5 @@
 import { discordLogger as logger } from "../logger.js";
 import fs from "fs";
-import config from "../config.json" with { type: "json" };
 
 // Hold a reference to the Discord client, set from index.js
 let client = null;
@@ -65,7 +64,9 @@ export async function initChannels() {
 		const freshConfig = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 		CHANNELS.chat = await getChannelById(freshConfig.discord.channels.chat);
 		CHANNELS.status = await getChannelById(freshConfig.discord.channels.status);
-		CHANNELS.updates = await getChannelById(freshConfig.discord.channels.updates);
+		CHANNELS.updates = await getChannelById(
+			freshConfig.discord.channels.updates,
+		);
 		logger.info("All Discord channels initialized successfully");
 	} catch (error) {
 		logger.error(
