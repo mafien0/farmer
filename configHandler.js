@@ -4,17 +4,16 @@ import { initChannels } from "./discord/messageService.js";
 import { createStatusMsg } from "./discord/statusService.js";
 import config from "./config.json" with { type: "json" };
 
-export function createConfigFile() {
-	// If no `default_config.json` - error
+function createConfigFile() {
 	if (!fs.existsSync("./default_config.json")) {
 		throw new Error("default_config.json is missing");
 	}
-	// If no `config.json` - copy it from `default_config.json`
 	if (!fs.existsSync("./config.json")) {
 		logger.info("No config file is present, creating a new one");
 		fs.cpSync("./default_config.json", "./config.json");
 	}
 }
+createConfigFile();
 
 export function writeConfig(UPDconfig) {
 	try {
