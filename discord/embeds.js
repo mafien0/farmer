@@ -1,8 +1,10 @@
 import { discordLogger as logger } from "../logger.js";
 import { EmbedBuilder, resolveColor } from "discord.js";
+import { config } from "../configHandler.js";
 
-import config from "../config.json" with { type: "json" };
-const colors = config.discord.embed.colors;
+function getColors() {
+	return config.discord.embed.colors;
+}
 
 // Embed generator
 function generateEmbed(header, content, color = null) {
@@ -14,7 +16,7 @@ function generateEmbed(header, content, color = null) {
 		logger.error("in generateEmbed(): Content cannot be empty");
 		return;
 	}
-	if (!color) color = colors.white || "#ffffff";
+	if (!color) color = getColors().white || "#ffffff";
 
 	return new EmbedBuilder()
 		.setTitle(header)
@@ -24,13 +26,13 @@ function generateEmbed(header, content, color = null) {
 
 // Different types of embeds
 export const createMessage = (header, content) =>
-	generateEmbed(header, content, colors.white || "#ffffff");
+	generateEmbed(header, content, getColors().white || "#ffffff");
 export const createError = (header, content) =>
-	generateEmbed(header, content, colors.red || "#ff0000");
+	generateEmbed(header, content, getColors().red || "#ff0000");
 export const createSuccess = (header, content) =>
-	generateEmbed(header, content, colors.green || "#00ff00");
+	generateEmbed(header, content, getColors().green || "#00ff00");
 export const createWarning = (header, content) =>
-	generateEmbed(header, content, colors.yellow || "#ffff00");
+	generateEmbed(header, content, getColors().yellow || "#ffff00");
 
 // Status embed
 export function createStatusEmbed(status) {
@@ -39,7 +41,7 @@ export function createStatusEmbed(status) {
 		return;
 	}
 	const color =
-		status.status.toLowerCase() === "online" ? colors.green : colors.gray;
+		status.status.toLowerCase() === "online" ? getColors().green : getColors().gray;
 	const time = Math.floor(Date.now() / 1000);
 
 	return new EmbedBuilder().setTitle(status.name).setColor(color)

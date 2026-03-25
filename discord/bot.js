@@ -5,7 +5,7 @@ import { sendBotMsg } from "../mineflayer/bot.js";
 import { messageUpdate } from "./updateService.js";
 import { serverInit } from "./guildHandler.js";
 
-import config from "../config.json" with { type: "json" };
+import { config } from "../configHandler.js";
 const channelIDs = config.discord.channels;
 
 

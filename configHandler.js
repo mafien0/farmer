@@ -1,8 +1,8 @@
 import { commonLogger as logger } from "./logger.js";
 import fs from "fs";
+import { createRequire } from "module";
 import { initChannels } from "./discord/messageService.js";
 import { createStatusMsg } from "./discord/statusService.js";
-import config from "./config.json" with { type: "json" };
 
 function createConfigFile() {
 	if (!fs.existsSync("./default_config.json")) {
@@ -14,6 +14,9 @@ function createConfigFile() {
 	}
 }
 createConfigFile();
+
+const require = createRequire(import.meta.url);
+export const config = require("./config.json");
 
 export function writeConfig(UPDconfig) {
 	try {

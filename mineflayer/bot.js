@@ -4,7 +4,7 @@ import { attachListeners } from "./listeners.js";
 
 import { disconnectUpdate, reconnectUpdate } from "../discord/updateService.js";
 
-import config from "../config.json" with { type: "json" };
+import { config } from "../configHandler.js";
 const mfconfig = config.mineflayer;
 
 const BASE_RECONNECT_TIMEOUT = mfconfig.base_reconnect_timeout || 5000;
