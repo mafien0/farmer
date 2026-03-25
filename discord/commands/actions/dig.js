@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
 import { dig } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
@@ -7,11 +7,14 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
 	if (dig()) {
-		await interaction.reply({ content: "Using the block", ephemeral: true });
+		await interaction.reply({
+			content: "Using the block",
+			flags: MessageFlags.Ephemeral,
+		});
 	} else {
 		await interaction.reply({
 			content: "Couldn't use the block",
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 }

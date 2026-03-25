@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
 import { disconnect } from "../../../mineflayer/bot.js";
 
 export const data = new SlashCommandBuilder()
@@ -7,11 +7,14 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
 	if (disconnect()) {
-		await interaction.reply({ content: "Disconnected", ephemeral: true });
+		await interaction.reply({
+			content: "Disconnected",
+			flags: MessageFlags.Ephemeral,
+		});
 	} else {
 		await interaction.reply({
 			content: "Something went wrong",
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 }

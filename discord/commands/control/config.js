@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
 import {
 	updateIP,
 	updateUsername,
@@ -61,6 +61,6 @@ export async function execute(interaction) {
 
 	await interaction.reply({
 		content: `Updated "${field}" with "${value}"`,
-		ephemeral: true,
+		flags: MessageFlags.Ephemeral,
 	});
 }

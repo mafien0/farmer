@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
 import { stop } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
@@ -9,12 +9,12 @@ export async function execute(interaction) {
 	if (stop()) {
 		await interaction.reply({
 			content: "Succesfully stoped all the actions",
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	} else {
 		await interaction.reply({
 			content: "Something went wrong",
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 }

@@ -1,10 +1,6 @@
 import { discordLogger as logger } from "../logger.js";
+import fs from "fs";
 import config from "../config.json" with { type: "json" };
-let channelIDs = config.discord.channels;
-
-export function updateChannelIDs() {
-	channelIDs = config.discord.channels;
-}
 
 // Hold a reference to the Discord client, set from index.js
 let client = null;
@@ -66,9 +62,10 @@ async function getChannelById(id) {
 // Called after client login
 export async function initChannels() {
 	try {
-		CHANNELS.chat = await getChannelById(channelIDs.chat);
-		CHANNELS.status = await getChannelById(channelIDs.status);
-		CHANNELS.updates = await getChannelById(channelIDs.updates);
+		const freshConfig = JSON.parse(fs.readFileSync("config.json", "utf-8"));
+		CHANNELS.chat = await getChannelById(freshConfig.discord.channels.chat);
+		CHANNELS.status = await getChannelById(freshConfig.discord.channels.status);
+		CHANNELS.updates = await getChannelById(freshConfig.discord.channels.updates);
 		logger.info("All Discord channels initialized successfully");
 	} catch (error) {
 		logger.error(
@@ -88,6 +85,7 @@ export async function sendMsg(msg, channelType = "chat") {
 	// If channels not yet initialized
 	if (!CHANNELS[channelType] && channelType !== "status") {
 		setTimeout(() => sendMsg(msg, channelType), 1000);
+		return;
 	}
 
 	try {

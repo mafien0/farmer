@@ -1,5 +1,5 @@
 import { discordLogger as logger } from "../logger.js";
-import { REST, Routes } from "discord.js";
+import { REST, Routes, MessageFlags } from "discord.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -124,12 +124,12 @@ export async function createCommandHandler(client) {
 			if (interaction.replied || interaction.deferred) {
 				await interaction.followUp({
 					content: "There was an error while executing this command!",
-					ephemeral: true,
+					flags: MessageFlags.Ephemeral,
 				});
 			} else {
 				await interaction.reply({
 					content: "There was an error while executing this command!",
-					ephemeral: true,
+					flags: MessageFlags.Ephemeral,
 				});
 			}
 		}

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
 import { sneak } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
@@ -16,13 +16,19 @@ export async function execute(interaction) {
 
 	if (sneak(action)) {
 		if (action)
-			await interaction.reply({ content: "Started sneaking", ephemeral: true });
+			await interaction.reply({
+				content: "Started sneaking",
+				flags: MessageFlags.Ephemeral,
+			});
 		else
-			await interaction.reply({ content: "Stopped sneaking", ephemeral: true });
+			await interaction.reply({
+				content: "Stopped sneaking",
+				flags: MessageFlags.Ephemeral,
+			});
 	} else {
 		await interaction.reply({
 			content: "Something went wrong",
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 }

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
 import { connect } from "../../../mineflayer/bot.js";
 
 export const data = new SlashCommandBuilder()
@@ -7,12 +7,15 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
 	if (connect()) {
-		await interaction.reply({ content: "Connected", ephemeral: true });
+		await interaction.reply({
+			content: "Connected",
+			flags: MessageFlags.Ephemeral,
+		});
 	} else {
 		await interaction.reply({
 			content:
 				"Couldn't connect to the server, check the updates channel for more info",
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 }

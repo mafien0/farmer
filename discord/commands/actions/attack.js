@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
 import { attack } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
@@ -7,11 +7,14 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
 	if (attack()) {
-		await interaction.reply({ content: "Punching the thing", ephemeral: true });
+		await interaction.reply({
+			content: "Punching the thing",
+			flags: MessageFlags.Ephemeral,
+		});
 	} else {
 		await interaction.reply({
 			content: "Couldn't punch the thing",
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 }

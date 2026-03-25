@@ -2,6 +2,8 @@ import { ChannelType } from "discord.js";
 import { discordLogger as logger } from "../logger.js";
 import { registerCommands } from "./commandsHandler.js";
 import { updateChannel, updateGuildID } from "../configHandler.js";
+import { createStatusMsg } from "./statusService.js";
+import { initChannels } from "./messageService.js";
 import config from "../config.json" with { type: "json" };
 
 async function createCategory(guild, name) {
@@ -23,7 +25,6 @@ async function createChannel(guild, parentID, name) {
 
 export async function serverInit(client, newGuild) {
 	if (process.env.DISCORD_GUILD_ID) {
-		// config.discord.guild = process.env.DISCORD_GUILD_ID;
 		updateGuildID(process.env.DISCORD_GUILD_ID);
 	}
 	const guildID = config.discord.guild;
@@ -44,7 +45,6 @@ export async function serverInit(client, newGuild) {
 		return;
 	}
 
-	// Write guild ID update to config if changed via env
 	// Register commands
 	const token = process.env.DISCORD_TOKEN;
 	if (token) {
@@ -64,6 +64,10 @@ export async function serverInit(client, newGuild) {
 		console.warn(
 			`Tried to create channels in ${guild.name}, but cannot(probably lack of permissions)`,
 		);
-		return;
 	}
+
+	// Update channel info in messageService
+	await initChannels();
+	// Send initial status message
+	await createStatusMsg();
 }
