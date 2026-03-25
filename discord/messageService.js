@@ -86,7 +86,7 @@ export async function sendMsg(msg, channelType = "chat") {
 	}
 
 	// If channels not yet initialized
-	if (CHANNELS[channelType] && channelType !== "status") {
+	if (!CHANNELS[channelType] && channelType !== "status") {
 		setTimeout(() => sendMsg(msg, channelType), 1000);
 	}
 

@@ -1,7 +1,7 @@
 import { ChannelType } from "discord.js";
 import { discordLogger as logger } from "../logger.js";
 import { registerCommands } from "./commandsHandler.js";
-import { updateChannel, updateGuildID } from "../configParser.js";
+import { updateChannel, updateGuildID } from "../configHandler.js";
 import config from "../config.json" with { type: "json" };
 
 async function createCategory(guild, name) {

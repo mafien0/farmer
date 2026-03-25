@@ -5,7 +5,7 @@ import {
 	updateVersion,
 	updateBaseReconnectTimeout,
 	updateMaxReconnectAttempts,
-} from "../../../configParser.js";
+} from "../../../configHandler.js";
 import { reconnect } from "../../../mineflayer/bot.js";
 
 export const data = new SlashCommandBuilder()

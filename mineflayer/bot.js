@@ -17,6 +17,10 @@ export let bot;
 export let shouldReconnect = true;
 let reconnectTimeout;
 
+export function isConnected() {
+	return bot?.entity != null;
+}
+
 export async function connect() {
 	logger.info("Connecting...");
 	try {
@@ -88,5 +92,6 @@ export async function scheduleReconnect() {
 }
 
 export function sendBotMsg(msg) {
-	bot.chat(msg);
+	if (isConnected()) bot.chat(msg);
+	else logger.warn("Bot is not connected");
 }

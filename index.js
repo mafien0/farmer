@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 import { discordLogger } from "./logger.js";
-import { createConfigFile } from "./configParser.js";
+import { createConfigFile } from "./configHandler.js";
 import { createBot } from "./discord/bot.js";
 import { setDiscordClient, initChannels } from "./discord/messageService.js";
 import { createStatusMsg } from "./discord/statusService.js";
