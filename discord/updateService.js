@@ -21,7 +21,7 @@ export const connectUpdate = () => {
 };
 
 export const disconnectUpdate = (info) => {
-	sendUpdateMsg(createError("disconnect", info));
+	sendUpdateMsg(createError("Disconnected", info));
 	logger.info(`Disconnect Update: ${info}`);
 };
 

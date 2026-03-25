@@ -37,3 +37,11 @@ export const mineflayerLogger = winston.createLogger({
 		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
 	],
 });
+
+export const commonLogger = winston.createLogger({
+	format: format.combine(format.timestamp(), createCustomFormat("[Common]")),
+	transports: [
+		new winston.transports.Console(),
+		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
+	],
+});

@@ -8,6 +8,7 @@ import { serverInit } from "./guildHandler.js";
 import config from "../config.json" with { type: "json" };
 const channelIDs = config.discord.channels;
 
+
 export function createBot() {
 	const client = new Client({
 		intents: [

@@ -14,7 +14,7 @@ let reconnectDelay = BASE_RECONNECT_TIMEOUT;
 
 // Will be assigned/re-assigned on connect
 export let bot;
-let intentionalQuit = false;
+export let shouldReconnect = true;
 
 export async function connect() {
 	logger.info("Connecting...");
@@ -32,6 +32,7 @@ export async function connect() {
 			// reset counters to their default state
 			reconnectAttempts = 0;
 			reconnectDelay = BASE_RECONNECT_TIMEOUT;
+			shouldReconnect = true;
 		});
 	} catch (error) {
 		logger.error(`Failed to create bot: ${error.message}`);
@@ -42,6 +43,7 @@ export async function connect() {
 // Used in a discord command
 export function disconnect() {
 	logger.info("Quiting...");
+	shouldReconnect = false;
 	bot.quit();
 	disconnectUpdate("Manual disconnect");
 	return true;
@@ -61,6 +63,7 @@ export function reconnect() {
 let reconnectTimeout;
 export async function scheduleReconnect() {
 	if (reconnectTimeout) clearTimeout(reconnectTimeout);
+	if (!shouldReconnect) return;
 
 	reconnectAttempts += 1;
 	if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
@@ -79,7 +82,7 @@ export async function scheduleReconnect() {
 	);
 
 	reconnectTimeout = setTimeout(() => {
-		connect();
+		if (shouldReconnect) connect();
 	}, delay);
 }
 

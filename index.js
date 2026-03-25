@@ -6,8 +6,6 @@ import { createBot } from "./discord/bot.js";
 import { setDiscordClient, initChannels } from "./discord/messageService.js";
 import { createStatusMsg } from "./discord/statusService.js";
 
-import { connect } from "./mineflayer/bot.js";
-
 // Connect discord bot
 const discord = createBot();
 const token = process.env.DISCORD_TOKEN;
