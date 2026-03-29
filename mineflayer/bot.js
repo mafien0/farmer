@@ -85,7 +85,9 @@ export function scheduleReconnect() {
 	reconnectDelay = Math.min(reconnectDelay * 2, 60000);
 
 	reconnectUpdate(
-		`Reconnecting in ${delay / 1000} seconds... (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`,
+		`Reconnecting in ${
+			delay / 1000
+		} seconds... (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`,
 	);
 
 	reconnectTimeout = setTimeout(() => {

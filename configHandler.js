@@ -19,10 +19,15 @@ export const config = JSON.parse(Deno.readTextFileSync("./config.json"));
 
 export function writeConfig(UPDconfig) {
 	try {
-		Deno.writeTextFileSync("config.json", JSON.stringify(UPDconfig, null, "\t"));
+		Deno.writeTextFileSync(
+			"config.json",
+			JSON.stringify(UPDconfig, null, "\t"),
+		);
 		logger.info("Written config.json");
 	} catch (error) {
-		logger.error(`in writeConfig(): Failed to write config.json: ${error.message}`);
+		logger.error(
+			`in writeConfig(): Failed to write config.json: ${error.message}`,
+		);
 	}
 }
 

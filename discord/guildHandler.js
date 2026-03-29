@@ -59,6 +59,8 @@ export async function serverInit(client, newGuild) {
 		updateChannel("status", await createChannel(guild, category, "status"));
 		updateChannel("updates", await createChannel(guild, category, "updates"));
 	} catch {
-		console.warn(`Tried to create channels in ${guild.name}, but cannot(probably lack of permissions)`);
+		console.warn(
+			`Tried to create channels in ${guild.name}, but cannot(probably lack of permissions)`,
+		);
 	}
 }

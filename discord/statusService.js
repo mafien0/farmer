@@ -31,7 +31,9 @@ function fetchStatus(bot) {
 	// Position
 	if (bot.entity?.position) {
 		const pos = bot.entity.position;
-		status.coords = `${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}, ${pos.z.toFixed(1)}`;
+		status.coords = `${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}, ${
+			pos.z.toFixed(1)
+		}`;
 	}
 }
 
@@ -40,7 +42,9 @@ export async function createStatusMsg() {
 	try {
 		await wipeMessages("status");
 	} catch (error) {
-		logger.warn(`in createStatusMsg(): Failed to wipe messages in status channel: ${error.message}`);
+		logger.warn(
+			`in createStatusMsg(): Failed to wipe messages in status channel: ${error.message}`,
+		);
 	}
 
 	// Send a new one
@@ -75,7 +79,9 @@ export async function updateStatus(bot) {
 		const channel = statusMsg.channel;
 		await channel.messages.fetch(statusMsg.id);
 	} catch (error) {
-		logger.warn(`Status message ${statusMsg.id} not found, creating new one: ${error.message}`);
+		logger.warn(
+			`Status message ${statusMsg.id} not found, creating new one: ${error.message}`,
+		);
 		await createStatusMsg();
 		return;
 	}
@@ -87,7 +93,9 @@ export async function updateStatus(bot) {
 	} catch (error) {
 		// Unknown Message
 		if (error.code === 10008) {
-			logger.warn(`Status message ${statusMsg.id} no longer exists, creating new one`);
+			logger.warn(
+				`Status message ${statusMsg.id} no longer exists, creating new one`,
+			);
 			await createStatusMsg();
 		} else {
 			logger.error(`Failed to update status message: ${error.message}`);

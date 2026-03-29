@@ -1,10 +1,10 @@
-import { SlashCommandBuilder, MessageFlags } from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import {
+	updateBaseReconnectTimeout,
 	updateIP,
+	updateMaxReconnectAttempts,
 	updateUsername,
 	updateVersion,
-	updateBaseReconnectTimeout,
-	updateMaxReconnectAttempts,
 } from "../../../configHandler.js";
 import { reconnect } from "../../../mineflayer/bot.js";
 
@@ -22,13 +22,13 @@ export const data = new SlashCommandBuilder()
 				{ name: "Version", value: "version" },
 				{ name: "Base reconnect timeout", value: "baseReconnectTimeout" },
 				{ name: "Max reconnect attempts", value: "maxReconnectAttempts" },
-			),
+			)
 	)
 	.addStringOption((option) =>
 		option
 			.setName("value")
 			.setDescription("Value to change the field to")
-			.setRequired(true),
+			.setRequired(true)
 	)
 	.addBooleanOption((option) =>
 		option
@@ -36,7 +36,7 @@ export const data = new SlashCommandBuilder()
 			.setDescription(
 				"Should bot reconnect after config changes? Defaults to false",
 			)
-			.setRequired(false),
+			.setRequired(false)
 	);
 
 export async function execute(interaction) {

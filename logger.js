@@ -10,26 +10,37 @@ if (!fileExists("logs")) {
 
 const createCustomFormat = (prefix) =>
 	format.printf(({ level, message }) => {
-		const levelStr =
-			{
-				error: "[error]",
-				warn: "[warn]",
-				debug: "[debug]",
-			}[level] || "";
+		const levelStr = {
+			error: "[error]",
+			warn: "[warn]",
+			debug: "[debug]",
+		}[level] || "";
 		return `${prefix}${levelStr ? ` ${levelStr}` : ""} ${message}`;
 	});
 
 export const discordLogger = winston.createLogger({
 	format: format.combine(format.timestamp(), createCustomFormat("[Discord]")),
-	transports: [new winston.transports.Console(), new winston.transports.File({ filename: `logs/${timestamp}.log` })],
+	transports: [
+		new winston.transports.Console(),
+		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
+	],
 });
 
 export const mineflayerLogger = winston.createLogger({
-	format: format.combine(format.timestamp(), createCustomFormat("[Mineflayer]")),
-	transports: [new winston.transports.Console(), new winston.transports.File({ filename: `logs/${timestamp}.log` })],
+	format: format.combine(
+		format.timestamp(),
+		createCustomFormat("[Mineflayer]"),
+	),
+	transports: [
+		new winston.transports.Console(),
+		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
+	],
 });
 
 export const commonLogger = winston.createLogger({
 	format: format.combine(format.timestamp(), createCustomFormat("[Common]")),
-	transports: [new winston.transports.Console(), new winston.transports.File({ filename: `logs/${timestamp}.log` })],
+	transports: [
+		new winston.transports.Console(),
+		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
+	],
 });

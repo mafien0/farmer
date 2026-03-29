@@ -3,10 +3,10 @@ import { parseChat } from "../discord/chatService.js";
 import { updateStatus } from "../discord/statusService.js";
 
 import {
-	connectUpdate,
-	kickUpdate,
 	banUpdate,
+	connectUpdate,
 	disconnectUpdate,
+	kickUpdate,
 } from "../discord/updateService.js";
 import { scheduleReconnect } from "./bot.js";
 
@@ -36,8 +36,9 @@ export function attachListeners(bot) {
 	bot.on("kicked", (rawReason) => {
 		logger.debug(rawReason);
 		// Kick messages are really stupid, and return whatever it wants, so we need to check for each case
-		const reason =
-			typeof rawReason === "string" ? JSON.parse(rawReason) : rawReason;
+		const reason = typeof rawReason === "string"
+			? JSON.parse(rawReason)
+			: rawReason;
 
 		logger.debug(reason);
 		logger.debug(typeof rawReason);

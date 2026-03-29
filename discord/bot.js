@@ -1,6 +1,6 @@
 import { discordLogger as logger } from "../logger.js";
 import { Client, Events, GatewayIntentBits } from "discord.js";
-import { registerCommands, createCommandHandler } from "./commandsHandler.js";
+import { createCommandHandler, registerCommands } from "./commandsHandler.js";
 import { sendBotMsg } from "../mineflayer/bot.js";
 import { messageUpdate } from "./updateService.js";
 import { serverInit } from "./guildHandler.js";
@@ -10,7 +10,11 @@ const channelIDs = config.discord.channels;
 
 export function createBot() {
 	const client = new Client({
-		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+		intents: [
+			GatewayIntentBits.Guilds,
+			GatewayIntentBits.GuildMessages,
+			GatewayIntentBits.MessageContent,
+		],
 	});
 
 	client.on("guildCreate", async (guild) => {

@@ -1,5 +1,5 @@
 import { discordLogger as logger } from "../logger.js";
-import { REST, Routes, MessageFlags } from "discord.js";
+import { MessageFlags, REST, Routes } from "discord.js";
 import { join } from "@std/path";
 import { fileURLToPath } from "node:url";
 
@@ -36,7 +36,9 @@ export async function loadCommands() {
 				logger.info(`Loaded command: ${command.data.name}`);
 				loadedCommands.push(command.data.toJSON());
 			} else {
-				logger.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
+				logger.warn(
+					`The command at ${filePath} is missing a required "data" or "execute" property.`,
+				);
 			}
 		} catch (error) {
 			logger.error(`Failed to load command from ${filePath}:`, error);
@@ -88,7 +90,9 @@ export async function createCommandHandler(client) {
 					if ("data" in command && "execute" in command) {
 						commands.set(command.data.name, command);
 					} else {
-						logger.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
+						logger.warn(
+							`The command at ${filePath} is missing a required "data" or "execute" property.`,
+						);
 					}
 				} catch (error) {
 					logger.error(`Failed to load command from ${filePath}:`, error);
@@ -112,7 +116,9 @@ export async function createCommandHandler(client) {
 		try {
 			await command.execute(interaction);
 		} catch (error) {
-			logger.error(`Error executing command ${interaction.commandName}:\n${error}`);
+			logger.error(
+				`Error executing command ${interaction.commandName}:\n${error}`,
+			);
 
 			if (interaction.replied || interaction.deferred) {
 				await interaction.followUp({

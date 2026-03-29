@@ -2,7 +2,7 @@ import "@std/dotenv/load";
 import "./configHandler.js";
 import { discordLogger } from "./logger.js";
 import { createBot } from "./discord/bot.js";
-import { setDiscordClient, initChannels } from "./discord/messageService.js";
+import { initChannels, setDiscordClient } from "./discord/messageService.js";
 import { createStatusMsg } from "./discord/statusService.js";
 
 if (import.meta.main) {

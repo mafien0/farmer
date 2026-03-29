@@ -40,8 +40,9 @@ export function createStatusEmbed(status) {
 		logger.error("in createStatusEmbed(): `status` cannot be empty");
 		return;
 	}
-	const color =
-		status.status.toLowerCase() === "online" ? getColors().green : getColors().gray;
+	const color = status.status.toLowerCase() === "online"
+		? getColors().green
+		: getColors().gray;
 	const time = Math.floor(Date.now() / 1000);
 
 	return new EmbedBuilder().setTitle(status.name).setColor(color)

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, MessageFlags } from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { useItem } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
@@ -8,7 +8,7 @@ export const data = new SlashCommandBuilder()
 		option
 			.setName("continuously")
 			.setDescription("Use item continuously or not")
-			.setRequired(true),
+			.setRequired(true)
 	);
 
 export async function execute(interaction) {
