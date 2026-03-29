@@ -72,8 +72,8 @@ export async function scheduleReconnect() {
 
 	reconnectAttempts += 1;
 	if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
-		logger.error("Max reconnect attempts reached, exiting...");
-		process.exit(1);
+		logger.warn("Max reconnect attempts reached, stopping...");
+		return;
 	}
 
 	// Assign current reconnect delay
