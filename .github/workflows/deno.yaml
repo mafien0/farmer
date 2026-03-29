@@ -1,0 +1,32 @@
+# This workflow checks code quality with lint task and verifies formatting with deno fmt:check task
+
+name: Code Quality Check
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch: # Allow manual triggering
+
+permissions:
+  contents: read
+
+jobs:
+  quality-check:
+    name: Lint and Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Run linter
+        run: deno task lint
+
+      - name: Check formatting
+        run: deno task fmt:check
