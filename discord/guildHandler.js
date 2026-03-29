@@ -22,8 +22,8 @@ async function createChannel(guild, parentID, name) {
 }
 
 export async function serverInit(client, newGuild) {
-	if (process.env.DISCORD_GUILD_ID) {
-		updateGuildID(process.env.DISCORD_GUILD_ID);
+	if (Deno.env.DISCORD_GUILD_ID) {
+		updateGuildID(Deno.env.get("DISCORD_GUILD_ID"));
 	}
 	const guildID = config.discord.guild;
 	const guild = await client.guilds.fetch(newGuild.id).catch(() => null);
@@ -44,7 +44,7 @@ export async function serverInit(client, newGuild) {
 	}
 
 	// Register commands
-	const token = process.env.DISCORD_TOKEN;
+	const token = Deno.env.get("DISCORD_TOKEN");
 	if (token) {
 		// No need to await
 		registerCommands(client.user.id, token);

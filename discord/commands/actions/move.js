@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, MessageFlags } from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { move } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
@@ -14,13 +14,13 @@ export const data = new SlashCommandBuilder()
 				{ name: "back", value: "back" },
 				{ name: "left", value: "left" },
 				{ name: "right", value: "right" },
-			),
+			)
 	)
 	.addBooleanOption((option) =>
 		option
 			.setName("continuously")
 			.setDescription("Move continuously or not, defaults to true")
-			.setRequired(false),
+			.setRequired(false)
 	);
 
 export async function execute(interaction) {

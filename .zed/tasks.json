@@ -1,0 +1,39 @@
+[
+	{
+		"label": "Run",
+		"command": "deno",
+		"args": ["task", "dev"],
+		"use_new_terminal": true,
+		"allow_concurrent_runs": false
+	},
+	{
+		"label": "Format Code",
+		"command": "deno",
+		"args": ["task", "fmt"],
+		"use_new_terminal": false
+	},
+	{
+		"label": "Check Formatting",
+		"command": "deno",
+		"args": ["task", "fmt:check"],
+		"use_new_terminal": false
+	},
+	{
+		"label": "Lint Code",
+		"command": "deno",
+		"args": ["task", "lint"],
+		"use_new_terminal": false
+	},
+	{
+		"label": "Fix Lint Issues",
+		"command": "deno",
+		"args": ["task", "lint:fix"],
+		"use_new_terminal": false
+	},
+	{
+		"label": "Deno Test",
+		"command": "deno",
+		"args": ["test", "-A", "$ZED_FILE"],
+		"tags": ["js-test"]
+	}
+]

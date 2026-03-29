@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, MessageFlags } from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { jump } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
@@ -8,7 +8,7 @@ export const data = new SlashCommandBuilder()
 		option
 			.setName("continuously")
 			.setDescription("Run action continuously or not")
-			.setRequired(true),
+			.setRequired(true)
 	);
 
 export async function execute(interaction) {

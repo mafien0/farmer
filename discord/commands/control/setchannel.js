@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChannelType, MessageFlags } from "discord.js";
+import { ChannelType, MessageFlags, SlashCommandBuilder } from "discord.js";
 import { updateChannel } from "../../../configHandler.js";
 
 export const data = new SlashCommandBuilder()
@@ -13,14 +13,14 @@ export const data = new SlashCommandBuilder()
 				{ name: "Chat", value: "chat" },
 				{ name: "Status", value: "status" },
 				{ name: "Updates", value: "updates" },
-			),
+			)
 	)
 	.addChannelOption((option) =>
 		option
 			.setName("channel")
 			.setDescription("Channel itself")
 			.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
-			.setRequired(true),
+			.setRequired(true)
 	);
 
 export async function execute(interaction) {

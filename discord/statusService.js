@@ -31,7 +31,9 @@ function fetchStatus(bot) {
 	// Position
 	if (bot.entity?.position) {
 		const pos = bot.entity.position;
-		status.coords = `${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}, ${pos.z.toFixed(1)}`;
+		status.coords = `${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}, ${
+			pos.z.toFixed(1)
+		}`;
 	}
 }
 

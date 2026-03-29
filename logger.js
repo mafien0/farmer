@@ -1,21 +1,20 @@
-import fs from "fs";
 import winston from "winston";
+import { fileExists } from "./util.js";
 import { format } from "winston";
 
 const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
-if (!fs.existsSync("logs")) {
-	fs.mkdirSync("logs");
+if (!fileExists("logs")) {
+	Deno.mkdirSync("logs");
 }
 
 const createCustomFormat = (prefix) =>
 	format.printf(({ level, message }) => {
-		const levelStr =
-			{
-				error: "[error]",
-				warn: "[warn]",
-				debug: "[debug]",
-			}[level] || "";
+		const levelStr = {
+			error: "[error]",
+			warn: "[warn]",
+			debug: "[debug]",
+		}[level] || "";
 		return `${prefix}${levelStr ? ` ${levelStr}` : ""} ${message}`;
 	});
 

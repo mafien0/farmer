@@ -1,13 +1,12 @@
 import { discordLogger as logger } from "../logger.js";
 import { Client, Events, GatewayIntentBits } from "discord.js";
-import { registerCommands, createCommandHandler } from "./commandsHandler.js";
+import { createCommandHandler, registerCommands } from "./commandsHandler.js";
 import { sendBotMsg } from "../mineflayer/bot.js";
 import { messageUpdate } from "./updateService.js";
 import { serverInit } from "./guildHandler.js";
 
 import { config } from "../configHandler.js";
 const channelIDs = config.discord.channels;
-
 
 export function createBot() {
 	const client = new Client({
@@ -26,7 +25,7 @@ export function createBot() {
 	client.once(Events.ClientReady, async (client) => {
 		logger.info(`bot logged in as ${client.user.tag}`);
 
-		const token = process.env.DISCORD_TOKEN;
+		const token = Deno.env.get("DISCORD_TOKEN");
 		if (token) {
 			await registerCommands(client.user.id, token);
 		}

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, MessageFlags } from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { useBlock } from "../../../mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()

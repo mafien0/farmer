@@ -21,7 +21,7 @@ export function isConnected() {
 	return bot?.entity != null;
 }
 
-export async function connect() {
+export function connect() {
 	logger.info("Connecting...");
 	try {
 		bot = mineflayer.createBot({
@@ -62,11 +62,13 @@ export function reconnect() {
 	// It will automaticly reconnect because of `on("end")` listener
 	try {
 		bot.quit("reconnect");
-	} catch {}
+	} catch {
+		// Ignore
+	}
 	return true;
 }
 
-export async function scheduleReconnect() {
+export function scheduleReconnect() {
 	if (reconnectTimeout) clearTimeout(reconnectTimeout);
 	if (!shouldReconnect) return;
 
@@ -83,7 +85,9 @@ export async function scheduleReconnect() {
 	reconnectDelay = Math.min(reconnectDelay * 2, 60000);
 
 	reconnectUpdate(
-		`Reconnecting in ${delay / 1000} seconds... (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`,
+		`Reconnecting in ${
+			delay / 1000
+		} seconds... (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`,
 	);
 
 	reconnectTimeout = setTimeout(() => {

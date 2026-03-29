@@ -35,8 +35,9 @@ function extractLinks(obj, links = []) {
 	} else if (obj && typeof obj === "object") {
 		if (obj.click_event?.action === "open_url" && obj.click_event.url) {
 			const extractedText = extractTextFromObject(obj);
-			const text =
-				extractedText && extractedText.trim() ? extractedText.trim() : "Link";
+			const text = extractedText && extractedText.trim()
+				? extractedText.trim()
+				: "Link";
 			links.push({ url: obj.click_event.url, text });
 		}
 		Object.values(obj).forEach((value) => extractLinks(value, links));
