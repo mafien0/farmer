@@ -8,7 +8,7 @@ import { createStatusMsg } from "./discord/statusService.js";
 if (import.meta.main) {
 	// Connect discord bot
 	const discord = createBot();
-	const token = Deno.env.DISCORD_TOKEN;
+	const token = Deno.env.get("DISCORD_TOKEN");
 
 	if (!token) {
 		throw new Error("DISCORD_TOKEN environment variable is required");

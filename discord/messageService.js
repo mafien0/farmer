@@ -1,5 +1,4 @@
 import { discordLogger as logger } from "../logger.js";
-import fs from "fs";
 
 // Hold a reference to the Discord client, set from index.js
 let client = null;
@@ -29,7 +28,7 @@ async function getChannelById(id) {
 		return;
 	}
 	if (!client) {
-		logger.error("in getChannelById(): Client is initialized");
+		logger.error("in getChannelById(): Client is not initialized");
 		return;
 	}
 
@@ -50,9 +49,7 @@ async function getChannelById(id) {
 		// Return it
 		return channel;
 	} catch (error) {
-		logger.error(
-			`in getChannelByID(): Failed to fetch channel ${id}: ${error.message}`,
-		);
+		logger.error(`in getChannelByID(): Failed to fetch channel ${id}: ${error.message}`);
 		return;
 	}
 }
@@ -61,17 +58,13 @@ async function getChannelById(id) {
 // Called after client login
 export async function initChannels() {
 	try {
-		const freshConfig = JSON.parse(fs.readFileSync("config.json", "utf-8"));
-		CHANNELS.chat = await getChannelById(freshConfig.discord.channels.chat);
-		CHANNELS.status = await getChannelById(freshConfig.discord.channels.status);
-		CHANNELS.updates = await getChannelById(
-			freshConfig.discord.channels.updates,
-		);
+		const config = JSON.parse(Deno.readTextFileSync("config.json"));
+		CHANNELS.chat = await getChannelById(config.discord.channels.chat);
+		CHANNELS.status = await getChannelById(config.discord.channels.status);
+		CHANNELS.updates = await getChannelById(config.discord.channels.updates);
 		logger.info("All Discord channels initialized successfully");
 	} catch (error) {
-		logger.error(
-			`in initChannels(): Failed to initialize channels: ${error.message}`,
-		);
+		logger.error(`in initChannels(): Failed to initialize channels: ${error.message}`);
 		return;
 	}
 }
@@ -93,14 +86,13 @@ export async function sendMsg(msg, channelType = "chat") {
 		logger.info(`Sending message to "${channelType}" channel`);
 		return await CHANNELS[channelType].send(msg);
 	} catch (error) {
-		logger.error(
-			`in sendMsg(): Failed to send message to "${channelType}" channel: ${error.message}`,
-		);
+		logger.error(`in sendMsg(): Failed to send message to "${channelType}" channel: ${error.message}`);
 		return;
 	}
 }
-export const sendEmbedMsg = async (msg, channelType = "chat") =>
-	sendMsg({ embeds: [msg] }, channelType);
+export async function sendEmbedMsg(msg, channelType = "chat") {
+	return await sendMsg({ embeds: [msg] }, channelType);
+}
 
 // Wipe messaged util function
 export async function wipeMessages(channelType = "status", limit = 100) {
@@ -109,13 +101,9 @@ export async function wipeMessages(channelType = "status", limit = 100) {
 
 	// Split by age
 	// < 14d old
-	const recent = messages.filter(
-		(m) => Date.now() - m.createdTimestamp < 14 * 24 * 60 * 60 * 1000,
-	);
+	const recent = messages.filter((m) => Date.now() - m.createdTimestamp < 14 * 24 * 60 * 60 * 1000);
 	// > 14d old
-	const old = messages.filter(
-		(m) => Date.now() - m.createdTimestamp >= 14 * 24 * 60 * 60 * 1000,
-	);
+	const old = messages.filter((m) => Date.now() - m.createdTimestamp >= 14 * 24 * 60 * 60 * 1000);
 
 	// Bulk delete recent messages
 	if (recent.size > 0) await channel.bulkDelete(recent);

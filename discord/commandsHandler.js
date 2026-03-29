@@ -1,24 +1,23 @@
 import { discordLogger as logger } from "../logger.js";
 import { REST, Routes, MessageFlags } from "discord.js";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import { join } from "@std/path";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = join(__filename, "..");
 
 export async function loadCommands() {
 	const commands = [];
-	const commandsPath = path.join(__dirname, "commands");
+	const commandsPath = join(__dirname, "commands");
 
 	// Recursive directory scanning
 	function scanDirectory(dir) {
-		const items = fs.readdirSync(dir, { withFileTypes: true });
+		const items = Deno.readDirSync(dir);
 
 		for (const item of items) {
-			const filePath = path.join(dir, item.name);
+			const filePath = join(dir, item.name);
 
-			if (item.isDirectory()) {
+			if (item.isDirectory) {
 				scanDirectory(filePath);
 			} else if (item.name.endsWith(".js")) {
 				commands.push(filePath);
@@ -31,15 +30,13 @@ export async function loadCommands() {
 	const loadedCommands = [];
 	for (const filePath of commands) {
 		try {
-			const command = await import(`file://${filePath}`);
+			const command = await import(`file://${Deno.realPathSync(filePath)}`);
 
 			if ("data" in command && "execute" in command) {
 				logger.info(`Loaded command: ${command.data.name}`);
 				loadedCommands.push(command.data.toJSON());
 			} else {
-				logger.warn(
-					`The command at ${filePath} is missing a required "data" or "execute" property.`,
-				);
+				logger.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
 			}
 		} catch (error) {
 			logger.error(`Failed to load command from ${filePath}:`, error);
@@ -56,7 +53,7 @@ export async function registerCommands(clientId, token) {
 	try {
 		logger.info(`Started refreshing ${commands.length} app commands`);
 
-		const guildID = process.env.DISCORD_GUILD_ID;
+		const guildID = Deno.env.get("DISCORD_GUILD_ID");
 		if (!guildID) {
 			throw new Error("DISCORD_GUILD_ID environment variable is required");
 		}
@@ -73,27 +70,25 @@ export async function registerCommands(clientId, token) {
 
 export async function createCommandHandler(client) {
 	const commands = new Map();
-	const commandsPath = path.join(__dirname, "commands");
+	const commandsPath = join(__dirname, "commands");
 
 	// Recursive directory scanning
 	async function scanDirectory(dir) {
-		const items = fs.readdirSync(dir, { withFileTypes: true });
+		const items = Deno.readDirSync(dir);
 
 		for (const item of items) {
-			const filePath = path.join(dir, item.name);
+			const filePath = join(dir, item.name);
 
-			if (item.isDirectory()) {
+			if (item.isDirectory) {
 				await scanDirectory(filePath);
 			} else if (item.name.endsWith(".js")) {
 				try {
-					const command = await import(`file://${filePath}`);
+					const command = await import(`file://${Deno.realPathSync(filePath)}`);
 
 					if ("data" in command && "execute" in command) {
 						commands.set(command.data.name, command);
 					} else {
-						logger.warn(
-							`The command at ${filePath} is missing a required "data" or "execute" property.`,
-						);
+						logger.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
 					}
 				} catch (error) {
 					logger.error(`Failed to load command from ${filePath}:`, error);
@@ -117,9 +112,7 @@ export async function createCommandHandler(client) {
 		try {
 			await command.execute(interaction);
 		} catch (error) {
-			logger.error(
-				`Error executing command ${interaction.commandName}:\n${error}`,
-			);
+			logger.error(`Error executing command ${interaction.commandName}:\n${error}`);
 
 			if (interaction.replied || interaction.deferred) {
 				await interaction.followUp({

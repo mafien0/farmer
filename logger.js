@@ -1,4 +1,3 @@
-import fs from "fs";
 import winston from "winston";
 import { fileExists } from "./util.js";
 import { format } from "winston";
@@ -6,7 +5,7 @@ import { format } from "winston";
 const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
 if (!fileExists("logs")) {
-	fs.mkdirSync("logs");
+	Deno.mkdirSync("logs");
 }
 
 const createCustomFormat = (prefix) =>

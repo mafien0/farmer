@@ -8,14 +8,9 @@ import { serverInit } from "./guildHandler.js";
 import { config } from "../configHandler.js";
 const channelIDs = config.discord.channels;
 
-
 export function createBot() {
 	const client = new Client({
-		intents: [
-			GatewayIntentBits.Guilds,
-			GatewayIntentBits.GuildMessages,
-			GatewayIntentBits.MessageContent,
-		],
+		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 	});
 
 	client.on("guildCreate", async (guild) => {
@@ -26,7 +21,7 @@ export function createBot() {
 	client.once(Events.ClientReady, async (client) => {
 		logger.info(`bot logged in as ${client.user.tag}`);
 
-		const token = process.env.DISCORD_TOKEN;
+		const token = Deno.env.get("DISCORD_TOKEN");
 		if (token) {
 			await registerCommands(client.user.id, token);
 		}
