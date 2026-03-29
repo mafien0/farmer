@@ -5,14 +5,11 @@ export const data = new SlashCommandBuilder()
 	.setName("sneak")
 	.setDescription("Makes bot start/stop sneaking")
 	.addBooleanOption((option) =>
-		option
-			.setName("action")
-			.setDescription("Start or stop sneaking, defaults to true")
-			.setRequired(false),
+		option.setName("action").setDescription("Start or stop sneaking, defaults to true").setRequired(false),
 	);
 
 export async function execute(interaction) {
-	let action = interaction.options.getBoolean("action") ?? true;
+	const action = interaction.options.getBoolean("action") ?? true;
 
 	if (sneak(action)) {
 		if (action)
