@@ -25,9 +25,7 @@ export const data = new SlashCommandBuilder()
 			)
 	)
 	.addStringOption((option) =>
-		option
-			.setName("value")
-			.setDescription("Value to change the field to")
+		option.setName("value").setDescription("Value to change the field to")
 			.setRequired(true)
 	)
 	.addBooleanOption((option) =>
