@@ -1,10 +1,11 @@
 import fs from "fs";
 import winston from "winston";
+import { fileExists } from "./util.js";
 import { format } from "winston";
 
 const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
-if (!fs.existsSync("logs")) {
+if (!fileExists("logs")) {
 	fs.mkdirSync("logs");
 }
 
@@ -21,27 +22,15 @@ const createCustomFormat = (prefix) =>
 
 export const discordLogger = winston.createLogger({
 	format: format.combine(format.timestamp(), createCustomFormat("[Discord]")),
-	transports: [
-		new winston.transports.Console(),
-		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
-	],
+	transports: [new winston.transports.Console(), new winston.transports.File({ filename: `logs/${timestamp}.log` })],
 });
 
 export const mineflayerLogger = winston.createLogger({
-	format: format.combine(
-		format.timestamp(),
-		createCustomFormat("[Mineflayer]"),
-	),
-	transports: [
-		new winston.transports.Console(),
-		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
-	],
+	format: format.combine(format.timestamp(), createCustomFormat("[Mineflayer]")),
+	transports: [new winston.transports.Console(), new winston.transports.File({ filename: `logs/${timestamp}.log` })],
 });
 
 export const commonLogger = winston.createLogger({
 	format: format.combine(format.timestamp(), createCustomFormat("[Common]")),
-	transports: [
-		new winston.transports.Console(),
-		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
-	],
+	transports: [new winston.transports.Console(), new winston.transports.File({ filename: `logs/${timestamp}.log` })],
 });

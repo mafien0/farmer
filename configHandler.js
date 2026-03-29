@@ -1,31 +1,28 @@
 import { commonLogger as logger } from "./logger.js";
-import fs from "fs";
-import { createRequire } from "module";
+import { fileExists } from "./util.js";
 import { initChannels } from "./discord/messageService.js";
 import { createStatusMsg } from "./discord/statusService.js";
 
 function createConfigFile() {
-	if (!fs.existsSync("./default_config.json")) {
+	if (!fileExists("./default_config.json")) {
 		throw new Error("default_config.json is missing");
 	}
-	if (!fs.existsSync("./config.json")) {
+	if (!fileExists("./config.json")) {
 		logger.info("No config file is present, creating a new one");
-		fs.cpSync("./default_config.json", "./config.json");
+		Deno.copyFileSync("./default_config.json", "./config.json");
 	}
 }
 createConfigFile();
 
-const require = createRequire(import.meta.url);
-export const config = require("./config.json");
+// Expose config to other modules
+export const config = JSON.parse(Deno.readTextFileSync("./config.json"));
 
 export function writeConfig(UPDconfig) {
 	try {
-		fs.writeFileSync("config.json", JSON.stringify(UPDconfig, null, "\t"));
-		logger.info("Writen config.json");
+		Deno.writeTextFileSync("config.json", JSON.stringify(UPDconfig, null, "\t"));
+		logger.info("Written config.json");
 	} catch (error) {
-		logger.error(
-			`in writeConfig(): Failed to write config.json: ${error.message}`,
-		);
+		logger.error(`in writeConfig(): Failed to write config.json: ${error.message}`);
 	}
 }
 
