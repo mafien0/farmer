@@ -9,10 +9,11 @@
 	},
 
 	"discord": {
+		"guild": "",
 		"channels": {
-			"chat": "1477468782749290556",
-			"status": "1477468796024525036",
-			"updates": "1477468821534277845"
+			"chat": "",
+			"status": "",
+			"updates": ""
 		},
 		"embed": {
 			"colors": {

@@ -23,13 +23,13 @@ export function setDiscordClient(discordClient) {
 
 // Util function to get channel by its id
 async function getChannelById(id) {
-	if (!id) {
-		logger.error("In getChannelById(): No id provided");
-		return;
-	}
 	if (!client) {
 		logger.error("in getChannelById(): Client is not initialized");
 		return;
+	}
+	if (id === "") {
+		logger.warn("Bot is not connected to the server")
+		return
 	}
 
 	try {
@@ -50,7 +50,7 @@ async function getChannelById(id) {
 		return channel;
 	} catch (error) {
 		logger.error(
-			`in getChannelByID(): Failed to fetch channel ${id}: ${error.message}`,
+			`in getChannelByID(): Failed to fetch channel ${id}. Is bot on the server? Does he have needed permissions?`,
 		);
 		return;
 	}
@@ -75,16 +75,8 @@ export async function initChannels() {
 
 // Send messages function
 export async function sendMsg(msg, channelType = "chat") {
-	if (!msg) {
-		logger.error("in sendMsg(): Tried to send a message, but to msg provided");
-		return;
-	}
-
-	// If channels not yet initialized
-	if (!CHANNELS[channelType] && channelType !== "status") {
-		setTimeout(() => sendMsg(msg, channelType), 1000);
-		return;
-	}
+	// Bot is might be not on the needed server
+	if (!CHANNELS[channelType])  return
 
 	try {
 		logger.info(`Sending message to "${channelType}" channel`);
@@ -102,6 +94,9 @@ export async function sendEmbedMsg(msg, channelType = "chat") {
 
 // Wipe messaged util function
 export async function wipeMessages(channelType = "status", limit = 100) {
+	// Bot is might be not on the needed server
+	if (!CHANNELS[channelType]) return
+
 	const channel = CHANNELS[channelType];
 	const messages = await channel.messages.fetch({ limit });
 
