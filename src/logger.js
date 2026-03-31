@@ -3,9 +3,10 @@ import { fileExists } from "@/util.js";
 import { format } from "winston";
 
 const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+const logsDir = new URL("../logs", import.meta.url).pathname;
 
-if (!fileExists("logs")) {
-	Deno.mkdirSync("logs");
+if (!fileExists(logsDir)) {
+	Deno.mkdirSync(logsDir, { recursive: true });
 }
 
 const createCustomFormat = (prefix) =>
@@ -22,7 +23,7 @@ export const discordLogger = winston.createLogger({
 	format: format.combine(format.timestamp(), createCustomFormat("[Discord]")),
 	transports: [
 		new winston.transports.Console(),
-		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
+		new winston.transports.File({ filename: `${logsDir}/${timestamp}.log` }),
 	],
 });
 
@@ -33,7 +34,7 @@ export const mineflayerLogger = winston.createLogger({
 	),
 	transports: [
 		new winston.transports.Console(),
-		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
+		new winston.transports.File({ filename: `${logsDir}/${timestamp}.log` }),
 	],
 });
 
@@ -41,6 +42,6 @@ export const commonLogger = winston.createLogger({
 	format: format.combine(format.timestamp(), createCustomFormat("[Common]")),
 	transports: [
 		new winston.transports.Console(),
-		new winston.transports.File({ filename: `logs/${timestamp}.log` }),
+		new winston.transports.File({ filename: `${logsDir}/${timestamp}.log` }),
 	],
 });
