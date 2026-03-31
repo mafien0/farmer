@@ -28,8 +28,8 @@ async function getChannelById(id) {
 		return;
 	}
 	if (id === "") {
-		logger.warn("Bot is not connected to the server")
-		return
+		logger.warn("Bot is not connected to the server");
+		return;
 	}
 
 	try {
@@ -76,7 +76,7 @@ export async function initChannels() {
 // Send messages function
 export async function sendMsg(msg, channelType = "chat") {
 	// Bot is might be not on the needed server
-	if (!CHANNELS[channelType])  return
+	if (!CHANNELS[channelType]) return;
 
 	try {
 		logger.info(`Sending message to "${channelType}" channel`);
@@ -95,7 +95,7 @@ export async function sendEmbedMsg(msg, channelType = "chat") {
 // Wipe messaged util function
 export async function wipeMessages(channelType = "status", limit = 100) {
 	// Bot is might be not on the needed server
-	if (!CHANNELS[channelType]) return
+	if (!CHANNELS[channelType]) return;
 
 	const channel = CHANNELS[channelType];
 	const messages = await channel.messages.fetch({ limit });
