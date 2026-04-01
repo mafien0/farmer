@@ -22,7 +22,7 @@ async function createChannel(guild, parentID, name) {
 }
 
 export async function serverInit(client, newGuild) {
-	if (Deno.env.DISCORD_GUILD_ID) {
+	if (Deno.env.get("DISCORD_GUILD_ID")) {
 		updateGuildID(Deno.env.get("DISCORD_GUILD_ID"));
 	}
 	const guildID = config.discord.guild;
@@ -30,7 +30,7 @@ export async function serverInit(client, newGuild) {
 
 	// Check for unconfigured guilds
 	if (guildID !== newGuild.id) {
-		logger.warn("Bot connected to a server, but this is wrong one.");
+		logger.warn(`Bot connected to a server, but this is wrong one. guild: ${guildID}; new guild: ${newGuild.id}`);
 		if (guild.systemChannel) {
 			await guild.systemChannel
 				.send(
