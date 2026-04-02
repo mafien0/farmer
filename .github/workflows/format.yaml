@@ -1,0 +1,40 @@
+# This workflow formats the code with `deno fmt` task and `deno lint:fix` task
+
+name: Code formatter
+on: workflow_dispatch
+
+permissions:
+  contents: write
+
+jobs:
+  quality-check:
+    name: Lint and Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Run lint fix
+        run: deno task lint:fix
+
+      - name: Apply formatting
+        run: deno task fmt
+
+      - name: Commit the code
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          if ! git diff --staged --quiet; then
+            git commit -m "style: format code"
+            git push
+          fi

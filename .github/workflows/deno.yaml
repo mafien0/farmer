@@ -1,4 +1,4 @@
-# This workflow checks code quality with lint task and verifies formatting with deno fmt:check task
+# This workflow checks code quality with deno `lint` task and verifies formatting with `deno fmt:check` task
 
 name: Code Quality Check
 on:

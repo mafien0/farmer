@@ -1,4 +1,4 @@
-# This workflow checks code quality with lint task and verifies formatting with deno fmt:check task
+# This workflow tries to build a docker image
 
 name: Docker build check
 on:
