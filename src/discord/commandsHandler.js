@@ -65,7 +65,7 @@ export async function registerCommands(clientId, token) {
 		});
 
 		logger.info(`Successfully reloaded ${commands.length} app commands`);
-	} catch (error) {
+	} catch {
 		logger.warn("Couldn't register app commands");
 	}
 }

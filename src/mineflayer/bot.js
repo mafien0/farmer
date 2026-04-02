@@ -42,8 +42,8 @@ export function connect() {
 		});
 	} catch (error) {
 		logger.error(`Failed to create bot: ${error.message}`);
-		return false
 		scheduleReconnect();
+		return false
 	}
 	return true
 }

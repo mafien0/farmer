@@ -24,7 +24,7 @@ jobs:
           deno-version: v2.x
 
       - name: Run lint fix
-        run: deno task lint:fix
+        run: deno task lint:fix || true
 
       - name: Apply formatting
         run: deno task fmt

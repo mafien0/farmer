@@ -55,7 +55,7 @@ export async function createStatusMsg() {
 
 		logger.info(`Sent initial status message ${msg.id}`);
 		return msg;
-	} catch (error) {
+	} catch {
 		logger.warn(
 			`Failed to create status message, bot is might be not connected to the server or missing permissions`,
 		);

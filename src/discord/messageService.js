@@ -48,7 +48,7 @@ async function getChannelById(id) {
 
 		// Return it
 		return channel;
-	} catch (error) {
+	} catch {
 		logger.error(
 			`in getChannelByID(): Failed to fetch channel ${id}. Is bot on the server? Does he have needed permissions?`,
 		);
