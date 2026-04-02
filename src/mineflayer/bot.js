@@ -43,9 +43,9 @@ export function connect() {
 	} catch (error) {
 		logger.error(`Failed to create bot: ${error.message}`);
 		scheduleReconnect();
-		return false
+		return false;
 	}
-	return true
+	return true;
 }
 
 // Used in a discord command

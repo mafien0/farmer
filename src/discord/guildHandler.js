@@ -30,7 +30,9 @@ export async function serverInit(client, newGuild) {
 
 	// Check for unconfigured guilds
 	if (guildID !== newGuild.id) {
-		logger.warn(`Bot connected to a server, but this is wrong one. guild: ${guildID}; new guild: ${newGuild.id}`);
+		logger.warn(
+			`Bot connected to a server, but this is wrong one. guild: ${guildID}; new guild: ${newGuild.id}`,
+		);
 		if (guild.systemChannel) {
 			await guild.systemChannel
 				.send(
