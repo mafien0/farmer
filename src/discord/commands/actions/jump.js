@@ -7,12 +7,11 @@ export const data = new SlashCommandBuilder()
 	.addBooleanOption((option) =>
 		option
 			.setName("continuously")
-			.setDescription("Run action continuously or not")
-			.setRequired(true)
+			.setDescription("Run action continuously or not. Defaults to false")
 	);
 
 export async function execute(interaction) {
-	const continuously = interaction.options.getBoolean("continuously");
+	const continuously = interaction.options.getBoolean("continuously") ?? false
 	if (jump(continuously)) {
 		await interaction.reply({
 			content: "Jumping",
