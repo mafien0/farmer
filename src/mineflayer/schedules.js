@@ -6,7 +6,7 @@ class Schedule {
 		this.delay = delay;
 		this.actionName = actionName;
 		this.type = type;
-		this.timer = this.assignTimer();
+		this.timer = this.generateTimer()();
 		this.action = this.generateAction();
 
 		// Used for chat action
@@ -39,7 +39,7 @@ class Schedule {
 		return setTimeout(() => this.action(), this.delay);
 	}
 
-	assignTimer() {
+	generateTimer() {
 		if (this.type === "interval") return this.createInterval();
 		else return this.createTimeout();
 	}
