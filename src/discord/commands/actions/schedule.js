@@ -50,6 +50,9 @@ export async function execute(interaction) {
 	const subcommand = interaction.options.getSubcommand();
 
 	if (subcommand === "list") {
-		interaction.reply({embeds: [Schedule.list()]})
+		await interaction.reply({
+			embeds: [Schedule.list()],
+			flags: MessageFlags.Ephemeral,
+		});
 	}
 }

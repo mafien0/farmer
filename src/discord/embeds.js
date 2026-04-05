@@ -1,5 +1,5 @@
 import { discordLogger as logger } from "@/logger.js";
-import { Embed, EmbedBuilder, resolveColor } from "discord.js";
+import { EmbedBuilder, resolveColor } from "discord.js";
 import { config } from "@/configHandler.js";
 import { formatDuration } from "@/util.js";
 
@@ -73,10 +73,10 @@ export function createSheduleListEmbed(schedules) {
 		str += formatDuration(schedule.delay).padEnd(6) + "| ";
 
 		// Action
-		str += schedule.actionName.padEnd(9) + "| "
+		str += schedule.actionName.padEnd(9) + "| ";
 
 		// Type
-	  str += schedule.type;
+		str += schedule.type;
 
 		tableValues += str + "\n";
 	});

@@ -21,6 +21,7 @@ export class Schedule {
 		logger.info(
 			`Created a schedule with id: ${this.id}; delay: ${delay}; type: ${type}; action: ${actionName}`,
 		);
+		return true;
 	}
 
 	// Map of [ID ; Schedule instance]
@@ -47,22 +48,26 @@ export class Schedule {
 	disable() {
 		if (this.timer) clearTimer();
 		this.active = false;
+		return true;
 	}
 
 	enable() {
 		this.timer = this.generateTimer();
 		this.active = true;
+		return true;
 	}
 
 	reset() {
 		if (this.timer) clearTimer();
 		this.timer = this.generateTimer();
 		this.active = true;
+		return true;
 	}
 
 	remove() {
 		if (this.timer) clearTimer();
 		Schedule.activeSchedules.delete(this.id);
+		return true;
 	}
 
 	createInterval() {
@@ -92,9 +97,4 @@ export class Schedule {
 	static list() {
 		return createSheduleListEmbed(Schedule.activeSchedules);
 	}
-}
-
-export function createSchedule(delay, actionName, type, message) {
-	const schedule = new Schedule(delay, actionName, type, message);
-	return schedule.id ? true : false;
 }

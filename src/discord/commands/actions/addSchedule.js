@@ -1,5 +1,5 @@
 import { MessageFlags, SlashCommandBuilder } from "discord.js";
-import { createSchedule } from "@/mineflayer/schedules.js";
+import { Schedule } from "@/mineflayer/schedules.js";
 
 function createSubcommand(name, description, extraOptions = null) {
 	return (subcommand) => {
@@ -69,34 +69,47 @@ export const data = new SlashCommandBuilder()
 		createSubcommand("use-item", "Uses an item after the timeout"),
 	);
 
-export function execute(interaction) {
-	const time = interaction.options.getInteger("delay");
-	const unit = interaction.options.getString("unit");
-	const repeat = interaction.options.getBoolean("repeat") ?? false;
-	let subcommand = interaction.options.getSubcommand();
+export async function execute(interaction) {
+	try {
+		const time = interaction.options.getInteger("delay");
+		const unit = interaction.options.getString("unit");
+		const repeat = interaction.options.getBoolean("repeat") ?? false;
+		let subcommand = interaction.options.getSubcommand();
 
-	// Calculate delay
-	const units = {
-		ticks: 50,
-		seconds: 1000,
-		minutes: 1000 * 60,
-		hours: 1000 * 60 * 60,
-	};
-	const delay = time * units[unit];
+		// Calculate delay
+		const units = {
+			ticks: 50,
+			seconds: 1000,
+			minutes: 1000 * 60,
+			hours: 1000 * 60 * 60,
+		};
+		const delay = time * units[unit];
 
-	// Rename subcommand to use camelCase
-	if (subcommand === "use-block") subcommand = "useBlock";
-	if (subcommand === "use-item") subcommand = "useItem";
+		// Rename subcommand to use camelCase
+		if (subcommand === "use-block") subcommand = "useBlock";
+		if (subcommand === "use-item") subcommand = "useItem";
 
-	// Get the chat message if action is chat
-	let message = null;
-	if (subcommand === "chat") {
-		message = interaction.options.getString("message");
+		// Get the chat message if action is chat
+		let message = null;
+		if (subcommand === "chat") {
+			message = interaction.options.getString("message");
+		}
+
+		const type = repeat ? "interval" : "timeout";
+
+		// Create a schedule
+		// `message` is not used unless action == chat
+		new Schedule(delay, subcommand, type, message);
+
+		// Feedback
+		await interaction.reply({
+			content: "Succesfully created a schedule",
+			flags: MessageFlags.Ephemeral,
+		});
+	} catch {
+		await interaction.reply({
+			content: "Couldn't create a schedule",
+			flags: MessageFlags.Ephemeral,
+		});
 	}
-
-	const type = repeat ? "interval" : "timeout";
-
-	// Create a schedule
-	// `message` is not used unless action == chat
-	createSchedule(delay, subcommand, type, message);
 }
