@@ -7,8 +7,8 @@ class Schedule {
 		this.delay = delay;
 		this.actionName = actionName;
 		this.type = type;
-		this.action = this.generateAction();
 		this.timer = this.generateTimer();
+		this.action = this.generateAction();
 
 		// Used for chat action
 		this.message = message;
