@@ -1,10 +1,8 @@
-import { mineflayerLogger as logger } from "@/logger.js";
 import mineflayer from "mineflayer";
-import { attachListeners } from "@/mineflayer/listeners.js";
-
-import { disconnectUpdate, reconnectUpdate } from "@/discord/updateService.js";
-
 import { config } from "@/configHandler.js";
+import { disconnectUpdate, reconnectUpdate } from "@/discord/updateService.js";
+import { mineflayerLogger as logger } from "@/logger.js";
+import { attachListeners } from "@/mineflayer/listeners.js";
 const mfconfig = config.mineflayer;
 
 const BASE_RECONNECT_TIMEOUT = mfconfig.base_reconnect_timeout || 5000;
@@ -22,6 +20,8 @@ export function isConnected() {
 }
 
 export function connect() {
+	// If already connected, skip
+	if (isConnected()) return true;
 	logger.info("Connecting...");
 	try {
 		bot = mineflayer.createBot({
@@ -50,9 +50,11 @@ export function connect() {
 
 // Used in a discord command
 export function disconnect() {
+	if (!bot) return true; // Already disconnected
 	logger.info("Quiting...");
 	shouldReconnect = false;
 	bot.quit();
+	bot = null;
 	disconnectUpdate("Manual disconnect");
 	return true;
 }

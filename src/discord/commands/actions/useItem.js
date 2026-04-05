@@ -2,17 +2,16 @@ import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { useItem } from "@/mineflayer/actions.js";
 
 export const data = new SlashCommandBuilder()
-	.setName("useitem")
+	.setName("use-item")
 	.setDescription("Makes bot use currently holding item")
 	.addBooleanOption((option) =>
 		option
 			.setName("continuously")
-			.setDescription("Use item continuously or not")
-			.setRequired(true)
+			.setDescription("Use item continuously or not. Default to false")
 	);
 
 export async function execute(interaction) {
-	const continuously = interaction.options.getBoolean("continuously");
+	const continuously = interaction.options.getBoolean("continuously") ?? false;
 	if (useItem(continuously)) {
 		await interaction.reply({
 			content: "Using the item",

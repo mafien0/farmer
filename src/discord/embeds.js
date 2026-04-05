@@ -1,6 +1,7 @@
-import { discordLogger as logger } from "@/logger.js";
 import { EmbedBuilder, resolveColor } from "discord.js";
 import { config } from "@/configHandler.js";
+import { discordLogger as logger } from "@/logger.js";
+import { formatDuration } from "@/util.js";
 
 function getColors() {
 	return config.discord.embed.colors;
@@ -56,5 +57,37 @@ ${"-".repeat(30)}
 ${status.info}
 \`\`\`
 updated <t:${time}:R>
+`);
+}
+
+export function createSheduleListEmbed(schedules) {
+	let tableValues = "";
+	schedules.forEach((schedule) => {
+		// Id
+		let str = `${String(schedule.id).padEnd(4)}| `;
+
+		// Status
+		str += (schedule.active ? "ACTIVE" : "INACTIVE").padEnd(9) + "| ";
+
+		// Delay
+		str += formatDuration(schedule.delay).padEnd(6) + "| ";
+
+		// Action
+		str += schedule.actionName.padEnd(10) + "| ";
+
+		// Type
+		str += schedule.type;
+
+		tableValues += str + "\n";
+	});
+
+	return new EmbedBuilder()
+		.setTitle("Schedules")
+		.setColor(getColors().white)
+		.setDescription(`
+\`\`\`
+ID  | STATUS   | DELAY | ACTION    | TYPE
+${tableValues}
+\`\`\`
 `);
 }

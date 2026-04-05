@@ -1,17 +1,13 @@
-import { discordLogger as logger } from "@/logger.js";
-import { sendEmbedMsg } from "@/discord/messageService.js";
 import {
 	createError,
 	createMessage,
 	createSuccess,
 	createWarning,
 } from "@/discord/embeds.js";
+import { sendEmbedMsg } from "@/discord/messageService.js";
+import { discordLogger as logger } from "@/logger.js";
 
 function sendUpdateMsg(message) {
-	if (!message) {
-		logger.error("in sendUpdateMsg(): `message` cannot be empty");
-		return;
-	}
 	sendEmbedMsg(message, "updates");
 }
 
@@ -53,4 +49,9 @@ export const actionUpdate = (info) => {
 export const messageUpdate = (info) => {
 	sendUpdateMsg(createMessage("Message", info));
 	logger.info(`Message update: ${info}`);
+};
+
+export const scheduleUpdate = (info) => {
+	sendUpdateMsg(createMessage("Schedule ran", info));
+	logger.info(`Schedule update: ${info}`);
 };

@@ -1,5 +1,5 @@
-import { mineflayerLogger as logger } from "@/logger.js";
 import { sendMsg } from "@/discord/messageService.js";
+import { mineflayerLogger as logger } from "@/logger.js";
 
 function extractTextFromObject(obj) {
 	if (typeof obj === "string") return obj;

@@ -1,8 +1,8 @@
 import { ChannelType } from "discord.js";
-import { discordLogger as logger } from "@/logger.js";
-import { registerCommands } from "@/discord/commandsHandler.js";
 import { updateChannel, updateGuildID } from "@/configHandler.js";
 import { config } from "@/configHandler.js";
+import { registerCommands } from "@/discord/commandsHandler.js";
+import { discordLogger as logger } from "@/logger.js";
 
 async function createCategory(guild, name) {
 	const category = await guild.channels.create({

@@ -1,5 +1,5 @@
-import { bot } from "@/mineflayer/bot.js";
 import { actionUpdate } from "@/discord/updateService.js";
+import { bot } from "@/mineflayer/bot.js";
 
 export function stop() {
 	bot.clearControlStates();
@@ -66,5 +66,10 @@ export function move(direction, continuously) {
 export function sneak(isSneaking) {
 	actionUpdate(isSneaking ? "Started sneaking" : "Stopped sneaking");
 	bot.setControlState("sneak", isSneaking);
+	return true;
+}
+
+export function chat(message) {
+	bot.chat(message);
 	return true;
 }

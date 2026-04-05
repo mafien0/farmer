@@ -1,14 +1,14 @@
-import { discordLogger as logger } from "@/logger.js";
 import { Client, Events, GatewayIntentBits } from "discord.js";
+import { config } from "@/configHandler.js";
 import {
 	createCommandHandler,
 	registerCommands,
 } from "@/discord/commandsHandler.js";
-import { sendBotMsg } from "@/mineflayer/bot.js";
-import { messageUpdate } from "@/discord/updateService.js";
 import { serverInit } from "@/discord/guildHandler.js";
+import { messageUpdate } from "@/discord/updateService.js";
+import { discordLogger as logger } from "@/logger.js";
+import { sendBotMsg } from "@/mineflayer/bot.js";
 
-import { config } from "@/configHandler.js";
 const channelIDs = config.discord.channels;
 
 export function createBot() {
