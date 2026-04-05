@@ -6,9 +6,9 @@ import { createSheduleListEmbed } from "@/discord/embeds.js";
 export class Schedule {
 	constructor(delay, actionName, type, message) {
 		this.id = Schedule.generateID();
-		this.delay = delay;
+		this.delay = delay; // In ms
 		this.actionName = actionName;
-		this.type = type;
+		this.type = type; // Can be `active` or `inactive`
 		this.action = this.generateAction();
 		this.timer = isConnected() ? this.generateTimer() : null;
 		this.active = true;
@@ -69,7 +69,10 @@ export class Schedule {
 		return setInterval(() => this.action(), this.delay);
 	}
 	createTimeout() {
-		return setTimeout(() => this.action(), this.delay);
+		return setTimeout(() => {
+			this.action();
+			this.remove(); // Kill yourself after action completion
+		}, this.delay);
 	}
 	generateTimer() {
 		if (this.type === "interval") return this.createInterval();

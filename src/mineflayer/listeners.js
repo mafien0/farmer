@@ -27,7 +27,7 @@ export function attachListeners(bot) {
 	});
 
 	bot.once("end", (reason) => {
-		Schedule.clearAll()
+		Schedule.clearAll();
 
 		// Clear status updates
 		clearInterval(updateInterval);

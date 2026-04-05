@@ -3,7 +3,6 @@ import mineflayer from "mineflayer";
 import { attachListeners } from "@/mineflayer/listeners.js";
 import { disconnectUpdate, reconnectUpdate } from "@/discord/updateService.js";
 import { config } from "@/configHandler.js";
-import { Schedule } from "./schedules.js";
 const mfconfig = config.mineflayer;
 
 const BASE_RECONNECT_TIMEOUT = mfconfig.base_reconnect_timeout || 5000;
@@ -40,7 +39,6 @@ export function connect() {
 			reconnectAttempts = 0;
 			reconnectDelay = BASE_RECONNECT_TIMEOUT;
 			shouldReconnect = true;
-
 		});
 	} catch (error) {
 		logger.error(`Failed to create bot: ${error.message}`);
