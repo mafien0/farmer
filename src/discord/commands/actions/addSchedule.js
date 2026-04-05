@@ -67,6 +67,9 @@ export const data = new SlashCommandBuilder()
 	)
 	.addSubcommand(
 		createSubcommand("use-item", "Uses an item after the timeout"),
+	)
+	.addSubcommand(
+		createSubcommand("disconnect", "Disconnects after the timeout"),
 	);
 
 export async function execute(interaction) {
@@ -99,13 +102,20 @@ export async function execute(interaction) {
 
 		// Create a schedule
 		// `message` is not used unless action == chat
-		new Schedule(delay, subcommand, type, message);
+		if (new Schedule(delay, subcommand, type, message)) {
+			// Feedback
+			await interaction.reply({
+				content: "Successfully created a schedule",
+				flags: MessageFlags.Ephemeral,
+			});
+		} else {
+			await interaction.reply({
+				content: "Couldn't create a schedule",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
 
-		// Feedback
-		await interaction.reply({
-			content: "Successfully created a schedule",
-			flags: MessageFlags.Ephemeral,
-		});
+		// On error
 	} catch {
 		await interaction.reply({
 			content: "Couldn't create a schedule",

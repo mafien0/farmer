@@ -22,6 +22,8 @@ export function isConnected() {
 }
 
 export function connect() {
+	// If already connected, skip
+	if (isConnected()) return true;
 	logger.info("Connecting...");
 	try {
 		bot = mineflayer.createBot({
@@ -50,9 +52,11 @@ export function connect() {
 
 // Used in a discord command
 export function disconnect() {
+	if (!bot) return true; // Already disconnected
 	logger.info("Quiting...");
 	shouldReconnect = false;
 	bot.quit();
+	bot = null;
 	disconnectUpdate("Manual disconnect");
 	return true;
 }

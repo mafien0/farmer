@@ -1,5 +1,6 @@
-import * as Actions from "./actions.js";
 import { mineflayerLogger as logger } from "../logger.js";
+import * as Actions from "./actions.js";
+import { disconnect } from "./bot.js";
 import { createSheduleListEmbed } from "@/discord/embeds.js";
 
 export class Schedule {
@@ -41,7 +42,7 @@ export class Schedule {
 
 	clearTimer() {
 		if (this.type === "interval") clearInterval(this.timer);
-			else clearTimeout(this.timer);
+		else clearTimeout(this.timer);
 		this.timer = null;
 	}
 
@@ -73,7 +74,7 @@ export class Schedule {
 
 	generateTimer() {
 		if (this.type === "interval") return this.createInterval();
-			else return this.createTimeout();
+		else return this.createTimeout();
 	}
 
 	generateAction() {
@@ -83,6 +84,7 @@ export class Schedule {
 			dig: () => Actions.dig(),
 			useItem: () => Actions.useItem(),
 			useBlock: () => Actions.useBlock(),
+			disconnect: () => disconnect(),
 		};
 
 		return handlers[this.actionName];
@@ -93,30 +95,30 @@ export class Schedule {
 	}
 
 	static exists(id) {
-		return Schedule.activeSchedules.has(id)
+		return Schedule.activeSchedules.has(id);
 	}
 
 	static remove(id) {
 		const schedule = Schedule.activeSchedules.get(id);
 		if (schedule) {
-			return schedule.remove() ? true : false
+			return schedule.remove() ? true : false;
 		}
-		return false
+		return false;
 	}
 
 	static disable(id) {
 		const schedule = Schedule.activeSchedules.get(id);
 		if (schedule) {
-			return schedule.disable() ? true : false
+			return schedule.disable() ? true : false;
 		}
-		return false
+		return false;
 	}
 
 	static enable(id) {
 		const schedule = Schedule.activeSchedules.get(id);
 		if (schedule) {
-			return schedule.enable() ? true : false
+			return schedule.enable() ? true : false;
 		}
-		return false
+		return false;
 	}
 }

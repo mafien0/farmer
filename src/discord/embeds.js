@@ -73,7 +73,7 @@ export function createSheduleListEmbed(schedules) {
 		str += formatDuration(schedule.delay).padEnd(6) + "| ";
 
 		// Action
-		str += schedule.actionName.padEnd(9) + "| ";
+		str += schedule.actionName.padEnd(10) + "| ";
 
 		// Type
 		str += schedule.type;
@@ -86,7 +86,7 @@ export function createSheduleListEmbed(schedules) {
 		.setColor(getColors().white)
 		.setDescription(`
 \`\`\`
-ID  | STATUS   | DELAY | ACTION   | TYPE
+ID  | STATUS   | DELAY | ACTION    | TYPE
 ${tableValues}
 \`\`\`
 `);

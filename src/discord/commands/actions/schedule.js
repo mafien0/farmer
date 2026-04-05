@@ -58,17 +58,17 @@ export async function execute(interaction) {
 			embeds: [Schedule.list()],
 			flags: MessageFlags.Ephemeral,
 		});
-		return
+		return;
 	}
 
 	// Find a schedule by its id
-	const id = interaction.options.getInteger("schedule-id")
+	const id = interaction.options.getInteger("schedule-id");
 	if (!Schedule.exists(id)) {
 		await interaction.reply({
 			content: "Couldn't find a schedule with that id",
 			flags: MessageFlags.Ephemeral,
 		});
-		return
+		return;
 	}
 
 	// Remove
