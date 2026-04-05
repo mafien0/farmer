@@ -2,7 +2,7 @@ import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { Schedule } from "@/mineflayer/schedules.js";
 
 export const data = new SlashCommandBuilder()
-	.setName("schedules")
+	.setName("schedule")
 	.setDescription("Control schedules")
 	.addSubcommand((sub) =>
 		sub
@@ -54,5 +54,29 @@ export async function execute(interaction) {
 			embeds: [Schedule.list()],
 			flags: MessageFlags.Ephemeral,
 		});
+		return
+	}
+
+	const id = interaction.options.getInteger("schedule-id")
+	if (!Schedule.exists(id)) {
+		await interaction.reply({
+			content: "Couldn't find a schedule with that id",
+			flags: MessageFlags.Ephemeral,
+		});
+		return
+	}
+
+	if (subcommand === "remove") {
+		if (Schedule.remove(id)) {
+			await interaction.reply({
+				content: "Succesfully removed a schedule",
+				flags: MessageFlags.Ephemeral,
+			});
+		} else {
+			await interaction.reply({
+				content: "Couldn't delete a schedule",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
 	}
 }

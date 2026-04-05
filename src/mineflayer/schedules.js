@@ -40,13 +40,13 @@ export class Schedule {
 	}
 
 	clearTimer() {
-		if (type === "interval") clearInterval(timer);
-		else clearTimeout(timer);
+		if (this.type === "interval") clearInterval(this.timer);
+		else clearTimeout(this.timer);
 		this.timer = null;
 	}
 
 	disable() {
-		if (this.timer) clearTimer();
+		if (this.timer) this.clearTimer();
 		this.active = false;
 		return true;
 	}
@@ -58,14 +58,14 @@ export class Schedule {
 	}
 
 	reset() {
-		if (this.timer) clearTimer();
+		if (this.timer) this.clearTimer();
 		this.timer = this.generateTimer();
 		this.active = true;
 		return true;
 	}
 
 	remove() {
-		if (this.timer) clearTimer();
+		if (this.timer) this.clearTimer();
 		Schedule.activeSchedules.delete(this.id);
 		return true;
 	}
@@ -94,7 +94,22 @@ export class Schedule {
 		return handlers[this.actionName];
 	}
 
+	static exists(id) {
+		return Schedule.activeSchedules.has(id)
+	}
+
 	static list() {
 		return createSheduleListEmbed(Schedule.activeSchedules);
 	}
+
+	static remove(id) {
+		let schedule
+		if (schedule = Schedule.activeSchedules.get(id)) {
+			schedule.remove()
+			return true
+		} else {
+			return false
+		}
+	}
+
 }
