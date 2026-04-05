@@ -8,10 +8,6 @@ import {
 } from "@/discord/embeds.js";
 
 function sendUpdateMsg(message) {
-	if (!message) {
-		logger.error("in sendUpdateMsg(): `message` cannot be empty");
-		return;
-	}
 	sendEmbedMsg(message, "updates");
 }
 
@@ -53,4 +49,9 @@ export const actionUpdate = (info) => {
 export const messageUpdate = (info) => {
 	sendUpdateMsg(createMessage("Message", info));
 	logger.info(`Message update: ${info}`);
+};
+
+export const scheduleUpdate = (info) => {
+	sendUpdateMsg(createMessage("Schedule ran", info));
+	logger.info(`Schedule update: ${info}`);
 };

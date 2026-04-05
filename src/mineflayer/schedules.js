@@ -2,6 +2,7 @@ import { mineflayerLogger as logger } from "../logger.js";
 import * as Actions from "./actions.js";
 import { disconnect, isConnected } from "./bot.js";
 import { createSheduleListEmbed } from "@/discord/embeds.js";
+import { scheduleUpdate } from "../discord/updateService.js";
 
 export class Schedule {
 	constructor(delay, actionName, type, message) {
@@ -31,11 +32,13 @@ export class Schedule {
 	static generateID() {
 		// Generate random 3 digit number
 		const id = Math.floor(Math.random() * 900) + 100;
+		logger.info(`Generating ID: ${id}`);
 		// Lookup if schedule with this id doesn't exists
 		if (!this.activeSchedules.has(id)) {
 			return id;
 		} else {
 			// Repeat
+			logger.info("This id already exists, re-trying...");
 			return this.generateID();
 		}
 	}
@@ -48,17 +51,20 @@ export class Schedule {
 
 	// Schedule config
 	disable() {
+		logger.info(`Disabling schedule, schedule id: ${this.id}`);
 		if (this.timer) this.clearTimer();
 		this.active = false;
 		return true;
 	}
 	enable() {
+		logger.info(`Enabling schedule, schedule id: ${this.id}`);
 		if (this.timer) this.clearTimer();
 		this.timer = this.generateTimer();
 		this.active = true;
 		return true;
 	}
 	remove() {
+		logger.info(`Removing schedule, schedule id: ${this.id}`);
 		if (this.timer) this.clearTimer();
 		Schedule.activeSchedules.delete(this.id);
 		return true;
@@ -66,14 +72,41 @@ export class Schedule {
 
 	// Timer generation
 	createInterval() {
-		return setInterval(() => this.action(), this.delay);
+		logger.info("Creating interval timer");
+		return setInterval(() => {
+			// Log
+			logger.info(`interval schedule ran, id: ${this.id}`);
+			scheduleUpdate(
+				`Interval schedule ran\nID: ${this.id}, Action: ${this.actionName}`,
+			);
+
+			// Run
+			try {
+				this.action();
+			} catch {
+				logger.warn(`Couldn't run the action, id: ${this.id}`);
+			}
+		}, this.delay);
 	}
 	createTimeout() {
+		logger.info("Creating timeout timer");
 		return setTimeout(() => {
-			this.action();
+			// Log
+			logger.info(`One-time schedule ran, id: ${this.id}`);
+			scheduleUpdate(
+				`One-time schedule ran\nID: ${this.id}, Action: ${this.actionName}`,
+			);
+
+			// Run
+			try {
+				this.action();
+			} catch {
+				logger.warn(`Couldn't run the action, id: ${this.id}`);
+			}
 			this.remove(); // Kill yourself after action completion
 		}, this.delay);
 	}
+
 	generateTimer() {
 		if (this.type === "interval") return this.createInterval();
 		else return this.createTimeout();
@@ -125,18 +158,21 @@ export class Schedule {
 
 	// Bulk configure
 	static disableAll() {
+		logger.info("Disabling all schedules")
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.disable();
 		});
 		return true;
 	}
 	static enableAll() {
+		logger.info("Enabling all schedules")
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.enable();
 		});
 		return true;
 	}
 	static removeAll() {
+		logger.info("Removing all schedules")
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.remove();
 		});
@@ -145,6 +181,7 @@ export class Schedule {
 
 	// Clears timers for all schedules
 	static clearAll() {
+		logger.info("Clearing all schedules")
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.clearTimer();
 		});
@@ -153,6 +190,7 @@ export class Schedule {
 
 	// Starts timers for all enabled schedules
 	static startAll() {
+		logger.info("Starting all schedules")
 		Schedule.activeSchedules.forEach((schedule) => {
 			if (schedule.active) schedule.enable();
 		});
