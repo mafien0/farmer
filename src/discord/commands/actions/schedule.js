@@ -57,7 +57,7 @@ export const data = new SlashCommandBuilder()
 		subcommand
 			.setName("use-item")
 			.setDescription("Uses an item after the timeout")
-	)
+	);
 
 export async function execute(interaction) {
 }

@@ -11,7 +11,7 @@ export const data = new SlashCommandBuilder()
 	);
 
 export async function execute(interaction) {
-	const continuously = interaction.options.getBoolean("continuously") ?? false
+	const continuously = interaction.options.getBoolean("continuously") ?? false;
 	if (jump(continuously)) {
 		await interaction.reply({
 			content: "Jumping",

@@ -68,3 +68,8 @@ export function sneak(isSneaking) {
 	bot.setControlState("sneak", isSneaking);
 	return true;
 }
+
+export function chat(message) {
+	bot.chat(message);
+	return true;
+}
