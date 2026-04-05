@@ -1,6 +1,6 @@
 import { mineflayerLogger as logger } from "../logger.js";
 import * as Actions from "./actions.js";
-import { disconnect } from "./bot.js";
+import { disconnect, isConnected } from "./bot.js";
 import { createSheduleListEmbed } from "@/discord/embeds.js";
 
 export class Schedule {
@@ -9,8 +9,8 @@ export class Schedule {
 		this.delay = delay;
 		this.actionName = actionName;
 		this.type = type;
-		this.timer = this.generateTimer();
 		this.action = this.generateAction();
+		this.timer = isConnected() ? this.generateTimer() : null;
 		this.active = true;
 
 		// Used for chat action
@@ -46,32 +46,31 @@ export class Schedule {
 		this.timer = null;
 	}
 
+	// Schedule config
 	disable() {
 		if (this.timer) this.clearTimer();
 		this.active = false;
 		return true;
 	}
-
 	enable() {
 		if (this.timer) this.clearTimer();
 		this.timer = this.generateTimer();
 		this.active = true;
 		return true;
 	}
-
 	remove() {
 		if (this.timer) this.clearTimer();
 		Schedule.activeSchedules.delete(this.id);
 		return true;
 	}
 
+	// Timer generation
 	createInterval() {
 		return setInterval(() => this.action(), this.delay);
 	}
 	createTimeout() {
 		return setTimeout(() => this.action(), this.delay);
 	}
-
 	generateTimer() {
 		if (this.type === "interval") return this.createInterval();
 		else return this.createTimeout();
@@ -98,6 +97,7 @@ export class Schedule {
 		return Schedule.activeSchedules.has(id);
 	}
 
+	// Schedule config
 	static remove(id) {
 		const schedule = Schedule.activeSchedules.get(id);
 		if (schedule) {
@@ -105,7 +105,6 @@ export class Schedule {
 		}
 		return false;
 	}
-
 	static disable(id) {
 		const schedule = Schedule.activeSchedules.get(id);
 		if (schedule) {
@@ -113,7 +112,6 @@ export class Schedule {
 		}
 		return false;
 	}
-
 	static enable(id) {
 		const schedule = Schedule.activeSchedules.get(id);
 		if (schedule) {
@@ -122,23 +120,38 @@ export class Schedule {
 		return false;
 	}
 
+	// Bulk configure
 	static disableAll() {
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.disable();
 		});
 		return true;
 	}
-
 	static enableAll() {
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.enable();
 		});
 		return true;
 	}
-
 	static removeAll() {
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.remove();
+		});
+		return true;
+	}
+
+	// Clears timers for all schedules
+	static clearAll() {
+		Schedule.activeSchedules.forEach((schedule) => {
+			schedule.clearTimer();
+		});
+		return true;
+	}
+
+	// Starts timers for all enabled schedules
+	static startAll() {
+		Schedule.activeSchedules.forEach((schedule) => {
+			if (schedule.active) schedule.enable();
 		});
 		return true;
 	}

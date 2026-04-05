@@ -9,6 +9,7 @@ import {
 	kickUpdate,
 } from "@/discord/updateService.js";
 import { scheduleReconnect } from "@/mineflayer/bot.js";
+import { Schedule } from "./schedules.js";
 
 export function attachListeners(bot) {
 	let updateInterval;
@@ -16,11 +17,19 @@ export function attachListeners(bot) {
 	bot.once("spawn", () => {
 		updateStatus(bot);
 		logger.info("Connected");
+
+		// Status updates
 		connectUpdate();
 		updateInterval = setInterval(() => updateStatus(bot), 10000);
+
+		// Start all schedules
+		Schedule.startAll();
 	});
 
 	bot.once("end", (reason) => {
+		Schedule.clearAll()
+
+		// Clear status updates
 		clearInterval(updateInterval);
 		updateStatus();
 
