@@ -1,5 +1,5 @@
-import { bot } from "@/mineflayer/bot.js";
 import { actionUpdate } from "@/discord/updateService.js";
+import { bot } from "@/mineflayer/bot.js";
 
 export function stop() {
 	bot.clearControlStates();

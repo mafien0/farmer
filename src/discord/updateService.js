@@ -1,11 +1,11 @@
-import { discordLogger as logger } from "@/logger.js";
-import { sendEmbedMsg } from "@/discord/messageService.js";
 import {
 	createError,
 	createMessage,
 	createSuccess,
 	createWarning,
 } from "@/discord/embeds.js";
+import { sendEmbedMsg } from "@/discord/messageService.js";
+import { discordLogger as logger } from "@/logger.js";
 
 function sendUpdateMsg(message) {
 	sendEmbedMsg(message, "updates");

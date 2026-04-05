@@ -1,6 +1,6 @@
 import winston from "winston";
-import { fileExists } from "@/util.js";
 import { format } from "winston";
+import { fileExists } from "@/util.js";
 
 const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 const logsDir = new URL("../logs", import.meta.url).pathname;

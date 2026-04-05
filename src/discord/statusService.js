@@ -1,6 +1,6 @@
-import { discordLogger as logger } from "@/logger.js";
 import { createStatusEmbed } from "@/discord/embeds.js";
 import { sendEmbedMsg, wipeMessages } from "@/discord/messageService.js";
+import { discordLogger as logger } from "@/logger.js";
 
 let statusMsg;
 

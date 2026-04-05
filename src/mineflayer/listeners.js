@@ -1,13 +1,12 @@
-import { mineflayerLogger as logger } from "@/logger.js";
 import { parseChat } from "@/discord/chatService.js";
 import { updateStatus } from "@/discord/statusService.js";
-
 import {
 	banUpdate,
 	connectUpdate,
 	disconnectUpdate,
 	kickUpdate,
 } from "@/discord/updateService.js";
+import { mineflayerLogger as logger } from "@/logger.js";
 import { scheduleReconnect } from "@/mineflayer/bot.js";
 import { Schedule } from "./schedules.js";
 

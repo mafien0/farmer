@@ -1,7 +1,7 @@
-import { discordLogger as logger } from "@/logger.js";
-import { MessageFlags, REST, Routes } from "discord.js";
 import { join } from "@std/path";
+import { MessageFlags, REST, Routes } from "discord.js";
 import { fileURLToPath } from "node:url";
+import { discordLogger as logger } from "@/logger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, "..");

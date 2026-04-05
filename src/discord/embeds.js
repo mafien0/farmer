@@ -1,6 +1,6 @@
-import { discordLogger as logger } from "@/logger.js";
 import { EmbedBuilder, resolveColor } from "discord.js";
 import { config } from "@/configHandler.js";
+import { discordLogger as logger } from "@/logger.js";
 import { formatDuration } from "@/util.js";
 
 function getColors() {

@@ -1,8 +1,8 @@
+import { createSheduleListEmbed } from "@/discord/embeds.js";
+import { scheduleUpdate } from "../discord/updateService.js";
 import { mineflayerLogger as logger } from "../logger.js";
 import * as Actions from "./actions.js";
 import { disconnect, isConnected } from "./bot.js";
-import { createSheduleListEmbed } from "@/discord/embeds.js";
-import { scheduleUpdate } from "../discord/updateService.js";
 
 export class Schedule {
 	constructor(delay, actionName, type, message) {
@@ -158,21 +158,21 @@ export class Schedule {
 
 	// Bulk configure
 	static disableAll() {
-		logger.info("Disabling all schedules")
+		logger.info("Disabling all schedules");
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.disable();
 		});
 		return true;
 	}
 	static enableAll() {
-		logger.info("Enabling all schedules")
+		logger.info("Enabling all schedules");
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.enable();
 		});
 		return true;
 	}
 	static removeAll() {
-		logger.info("Removing all schedules")
+		logger.info("Removing all schedules");
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.remove();
 		});
@@ -181,7 +181,7 @@ export class Schedule {
 
 	// Clears timers for all schedules
 	static clearAll() {
-		logger.info("Clearing all schedules")
+		logger.info("Clearing all schedules");
 		Schedule.activeSchedules.forEach((schedule) => {
 			schedule.clearTimer();
 		});
@@ -190,7 +190,7 @@ export class Schedule {
 
 	// Starts timers for all enabled schedules
 	static startAll() {
-		logger.info("Starting all schedules")
+		logger.info("Starting all schedules");
 		Schedule.activeSchedules.forEach((schedule) => {
 			if (schedule.active) schedule.enable();
 		});

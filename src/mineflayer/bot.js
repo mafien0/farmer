@@ -1,8 +1,8 @@
-import { mineflayerLogger as logger } from "@/logger.js";
 import mineflayer from "mineflayer";
-import { attachListeners } from "@/mineflayer/listeners.js";
-import { disconnectUpdate, reconnectUpdate } from "@/discord/updateService.js";
 import { config } from "@/configHandler.js";
+import { disconnectUpdate, reconnectUpdate } from "@/discord/updateService.js";
+import { mineflayerLogger as logger } from "@/logger.js";
+import { attachListeners } from "@/mineflayer/listeners.js";
 const mfconfig = config.mineflayer;
 
 const BASE_RECONNECT_TIMEOUT = mfconfig.base_reconnect_timeout || 5000;
