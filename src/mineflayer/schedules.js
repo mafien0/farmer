@@ -1,7 +1,8 @@
 import * as Actions from "./actions.js";
 import { mineflayerLogger as logger } from "../logger.js";
+import { createSheduleListEmbed } from "@/discord/embeds.js";
 
-class Schedule {
+export class Schedule {
 	constructor(delay, actionName, type, message) {
 		this.id = Schedule.generateID();
 		this.delay = delay;
@@ -9,6 +10,7 @@ class Schedule {
 		this.type = type;
 		this.timer = this.generateTimer();
 		this.action = this.generateAction();
+		this.active = true;
 
 		// Used for chat action
 		this.message = message;
@@ -36,7 +38,30 @@ class Schedule {
 		}
 	}
 
-	close() {
+	clearTimer() {
+		if (type === "interval") clearInterval(timer);
+		else clearTimeout(timer);
+		this.timer = null;
+	}
+
+	disable() {
+		if (this.timer) clearTimer();
+		this.active = false;
+	}
+
+	enable() {
+		this.timer = this.generateTimer();
+		this.active = true;
+	}
+
+	reset() {
+		if (this.timer) clearTimer();
+		this.timer = this.generateTimer();
+		this.active = true;
+	}
+
+	remove() {
+		if (this.timer) clearTimer();
 		Schedule.activeSchedules.delete(this.id);
 	}
 
@@ -62,6 +87,10 @@ class Schedule {
 		};
 
 		return handlers[this.actionName];
+	}
+
+	static list() {
+		return createSheduleListEmbed(Schedule.activeSchedules);
 	}
 }
 

@@ -1,9 +1,9 @@
 import { MessageFlags, SlashCommandBuilder } from "discord.js";
+import { Schedule } from "@/mineflayer/schedules.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("schedules")
 	.setDescription("Control schedules")
-
 	.addSubcommand((sub) =>
 		sub
 			.setName("list")
@@ -13,20 +13,43 @@ export const data = new SlashCommandBuilder()
 		sub
 			.setName("remove")
 			.setDescription("Remove a Schedule")
-			.addIntegerOption("Schedule ID")
+			.addIntegerOption((option) =>
+				option
+					.setName("schedule-id")
+					.setDescription("id of a schedule to update")
+					.setMinValue(100)
+					.setMaxValue(999)
+			)
 	)
 	.addSubcommand((sub) =>
 		sub
 			.setName("disable")
 			.setDescription("Disable a Schedule")
-			.addIntegerOption("Schedule ID")
+			.addIntegerOption((option) =>
+				option
+					.setName("schedule-id")
+					.setDescription("id of a schedule to update")
+					.setMinValue(100)
+					.setMaxValue(999)
+			)
 	)
 	.addSubcommand((sub) =>
 		sub
 			.setName("enable")
 			.setDescription("Enable a Schedules")
-			.addIntegerOption("Schedule ID")
-	)
+			.addIntegerOption((option) =>
+				option
+					.setName("schedule-id")
+					.setDescription("id of a schedule to update")
+					.setMinValue(100)
+					.setMaxValue(999)
+			)
+	);
 
 export async function execute(interaction) {
+	const subcommand = interaction.options.getSubcommand();
+
+	if (subcommand === "list") {
+		interaction.reply({embeds: [Schedule.list()]})
+	}
 }
