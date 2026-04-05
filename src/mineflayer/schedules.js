@@ -1,26 +1,34 @@
 import * as Actions from "./actions.js";
+import { mineflayerLogger as logger } from "../logger.js";
 
 class Schedule {
 	constructor(delay, actionName, type, message) {
-		this.id = generateID();
+		this.id = Schedule.generateID();
 		this.delay = delay;
 		this.actionName = actionName;
 		this.type = type;
-		this.timer = this.generateTimer()();
 		this.action = this.generateAction();
+		this.timer = this.generateTimer();
 
 		// Used for chat action
 		this.message = message;
+
+		// Add as an active schedule
+		Schedule.activeSchedules.set(this.id, this);
+
+		logger.info(
+			`Created a schedule with id: ${this.id}; delay: ${delay}; type: ${type}; action: ${actionName}`,
+		);
 	}
 
-	// ID ; Schedule instance
+	// Map of [ID ; Schedule instance]
 	static activeSchedules = new Map();
 
 	static generateID() {
 		// Generate random 3 digit number
 		const id = Math.floor(Math.random() * 900) + 100;
-		// Lookup if schedule with this id exists
-		if (!this.activeSchedules.has(num)) {
+		// Lookup if schedule with this id doesn't exists
+		if (!this.activeSchedules.has(id)) {
 			return id;
 		} else {
 			// Repeat
@@ -29,7 +37,7 @@ class Schedule {
 	}
 
 	close() {
-		activeSchedules.delete(this.id);
+		Schedule.activeSchedules.delete(this.id);
 	}
 
 	createInterval() {
@@ -55,4 +63,9 @@ class Schedule {
 
 		return handlers[this.actionName];
 	}
+}
+
+export function createSchedule(delay, actionName, type, message) {
+	const schedule = new Schedule(delay, actionName, type, message);
+	return schedule.id ? true : false;
 }
