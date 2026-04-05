@@ -99,11 +99,9 @@ export class Schedule {
 	static remove(id) {
 		const schedule = Schedule.activeSchedules.get(id);
 		if (schedule) {
-			schedule.remove()
-			return true
-		} else {
-			return false
+			return schedule.remove() ? true : false
 		}
+		return false
 	}
 
 	static disable(id) {
