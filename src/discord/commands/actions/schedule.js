@@ -11,6 +11,21 @@ export const data = new SlashCommandBuilder()
 	)
 	.addSubcommand((sub) =>
 		sub
+			.setName("remove-all")
+			.setDescription("Remove all schedules")
+	)
+	.addSubcommand((sub) =>
+		sub
+			.setName("disable-all")
+			.setDescription("Disable all schedules")
+	)
+	.addSubcommand((sub) =>
+		sub
+			.setName("enable-all")
+			.setDescription("Enable all schedules")
+	)
+	.addSubcommand((sub) =>
+		sub
 			.setName("remove")
 			.setDescription("Remove a Schedule")
 			.addIntegerOption((option) =>
@@ -58,6 +73,54 @@ export async function execute(interaction) {
 			embeds: [Schedule.list()],
 			flags: MessageFlags.Ephemeral,
 		});
+		return;
+	}
+
+	// Remove all
+	if (subcommand === "remove-all") {
+		if (Schedule.removeAll()) {
+			await interaction.reply({
+				content: "Succesfully removed all schedules",
+				flags: MessageFlags.Ephemeral,
+			});
+		} else {
+			await interaction.reply({
+				content: "Couldn't remove all schedules",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
+		return;
+	}
+
+	// Disable all
+	if (subcommand === "disable-all") {
+		if (Schedule.disableAll()) {
+			await interaction.reply({
+				content: "Succesfully disabled all schedules",
+				flags: MessageFlags.Ephemeral,
+			});
+		} else {
+			await interaction.reply({
+				content: "Couldn't disable all schedules",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
+		return;
+	}
+
+	// Enable all
+	if (subcommand === "enable-all") {
+		if (Schedule.enableAll()) {
+			await interaction.reply({
+				content: "Succesfully enabled all schedules",
+				flags: MessageFlags.Ephemeral,
+			});
+		} else {
+			await interaction.reply({
+				content: "Couldn't enable all schedules",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
 		return;
 	}
 

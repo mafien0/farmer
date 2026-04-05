@@ -121,4 +121,25 @@ export class Schedule {
 		}
 		return false;
 	}
+
+	static disableAll() {
+		Schedule.activeSchedules.forEach((schedule) => {
+			schedule.disable();
+		});
+		return true;
+	}
+
+	static enableAll() {
+		Schedule.activeSchedules.forEach((schedule) => {
+			schedule.enable();
+		});
+		return true;
+	}
+
+	static removeAll() {
+		Schedule.activeSchedules.forEach((schedule) => {
+			schedule.remove();
+		});
+		return true;
+	}
 }
