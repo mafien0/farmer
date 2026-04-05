@@ -1,11 +1,16 @@
+import * as Actions from "./actions.js";
+
 class Schedule {
-	constructor(delay, action, actionName, type) {
+	constructor(delay, actionName, type, message) {
 		this.id = generateID();
 		this.delay = delay;
-		this.action = action;
 		this.actionName = actionName;
 		this.type = type;
-		this.timer = null;
+		this.timer = this.assignTimer();
+		this.action = this.generateAction();
+
+		// Used for chat action
+		this.message = message;
 	}
 
 	// ID ; Schedule instance
@@ -27,15 +32,27 @@ class Schedule {
 		activeSchedules.delete(this.id);
 	}
 
-	assignInterval() {
-		this.timer = setInterval(() => this.action(), this.delay);
+	createInterval() {
+		return setInterval(() => this.action(), this.delay);
 	}
-	assignTimeout() {
-		this.timer = setTimeout(() => this.action(), this.delay);
+	createTimeout() {
+		return setTimeout(() => this.action(), this.delay);
 	}
 
-	assignSchedule() {
-		if (this.type === "interval") return setInterval();
-		else return setTimeout();
+	assignTimer() {
+		if (this.type === "interval") return this.createInterval();
+		else return this.createTimeout();
+	}
+
+	generateAction() {
+		const handlers = {
+			chat: () => Actions.chat(this.message),
+			attack: () => Actions.attack(),
+			dig: () => Actions.dig(),
+			useItem: () => Actions.useItem(),
+			useBlock: () => Actions.useBlock(),
+		};
+
+		return handlers[this.actionName];
 	}
 }
