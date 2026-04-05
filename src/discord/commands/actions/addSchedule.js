@@ -103,7 +103,7 @@ export async function execute(interaction) {
 
 		// Feedback
 		await interaction.reply({
-			content: "Succesfully created a schedule",
+			content: "Successfully created a schedule",
 			flags: MessageFlags.Ephemeral,
 		});
 	} catch {

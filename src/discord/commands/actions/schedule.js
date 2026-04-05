@@ -19,6 +19,7 @@ export const data = new SlashCommandBuilder()
 					.setDescription("id of a schedule to update")
 					.setMinValue(100)
 					.setMaxValue(999)
+					.setRequired(true)
 			)
 	)
 	.addSubcommand((sub) =>
@@ -31,6 +32,7 @@ export const data = new SlashCommandBuilder()
 					.setDescription("id of a schedule to update")
 					.setMinValue(100)
 					.setMaxValue(999)
+					.setRequired(true)
 			)
 	)
 	.addSubcommand((sub) =>
@@ -43,12 +45,14 @@ export const data = new SlashCommandBuilder()
 					.setDescription("id of a schedule to update")
 					.setMinValue(100)
 					.setMaxValue(999)
+					.setRequired(true)
 			)
 	);
 
 export async function execute(interaction) {
 	const subcommand = interaction.options.getSubcommand();
 
+	// List
 	if (subcommand === "list") {
 		await interaction.reply({
 			embeds: [Schedule.list()],
@@ -57,6 +61,7 @@ export async function execute(interaction) {
 		return
 	}
 
+	// Find a schedule by its id
 	const id = interaction.options.getInteger("schedule-id")
 	if (!Schedule.exists(id)) {
 		await interaction.reply({
@@ -66,15 +71,46 @@ export async function execute(interaction) {
 		return
 	}
 
+	// Remove
 	if (subcommand === "remove") {
 		if (Schedule.remove(id)) {
 			await interaction.reply({
-				content: "Succesfully removed a schedule",
+				content: "Successfully removed a schedule",
 				flags: MessageFlags.Ephemeral,
 			});
 		} else {
 			await interaction.reply({
 				content: "Couldn't delete a schedule",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
+	}
+
+	// Disable
+	if (subcommand === "disable") {
+		if (Schedule.disable(id)) {
+			await interaction.reply({
+				content: "Successfully disabled a schedule",
+				flags: MessageFlags.Ephemeral,
+			});
+		} else {
+			await interaction.reply({
+				content: "Couldn't disable a schedule",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
+	}
+
+	// Enable
+	if (subcommand === "enable") {
+		if (Schedule.enable(id)) {
+			await interaction.reply({
+				content: "Successfully enabled a schedule",
+				flags: MessageFlags.Ephemeral,
+			});
+		} else {
+			await interaction.reply({
+				content: "Couldn't enable a schedule",
 				flags: MessageFlags.Ephemeral,
 			});
 		}

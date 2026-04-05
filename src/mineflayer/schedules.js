@@ -41,7 +41,7 @@ export class Schedule {
 
 	clearTimer() {
 		if (this.type === "interval") clearInterval(this.timer);
-		else clearTimeout(this.timer);
+			else clearTimeout(this.timer);
 		this.timer = null;
 	}
 
@@ -52,12 +52,6 @@ export class Schedule {
 	}
 
 	enable() {
-		this.timer = this.generateTimer();
-		this.active = true;
-		return true;
-	}
-
-	reset() {
 		if (this.timer) this.clearTimer();
 		this.timer = this.generateTimer();
 		this.active = true;
@@ -79,7 +73,7 @@ export class Schedule {
 
 	generateTimer() {
 		if (this.type === "interval") return this.createInterval();
-		else return this.createTimeout();
+			else return this.createTimeout();
 	}
 
 	generateAction() {
@@ -94,17 +88,17 @@ export class Schedule {
 		return handlers[this.actionName];
 	}
 
-	static exists(id) {
-		return Schedule.activeSchedules.has(id)
-	}
-
 	static list() {
 		return createSheduleListEmbed(Schedule.activeSchedules);
 	}
 
+	static exists(id) {
+		return Schedule.activeSchedules.has(id)
+	}
+
 	static remove(id) {
-		let schedule
-		if (schedule = Schedule.activeSchedules.get(id)) {
+		const schedule = Schedule.activeSchedules.get(id);
+		if (schedule) {
 			schedule.remove()
 			return true
 		} else {
@@ -112,4 +106,19 @@ export class Schedule {
 		}
 	}
 
+	static disable(id) {
+		const schedule = Schedule.activeSchedules.get(id);
+		if (schedule) {
+			return schedule.disable() ? true : false
+		}
+		return false
+	}
+
+	static enable(id) {
+		const schedule = Schedule.activeSchedules.get(id);
+		if (schedule) {
+			return schedule.enable() ? true : false
+		}
+		return false
+	}
 }
