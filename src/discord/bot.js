@@ -7,7 +7,7 @@ import {
 import { serverInit } from "@/discord/guildHandler.js";
 import { messageUpdate } from "@/discord/updateService.js";
 import { discordLogger as logger } from "@/logger.js";
-import { sendBotMsg } from "@/mineflayer/bot.js";
+import { chat } from "@/mineflayer/actions.js";
 
 const channelIDs = config.discord.channels;
 
@@ -41,7 +41,7 @@ export function createBot() {
 			msg.delete().catch(logger.error);
 
 			// Send it to minecraft
-			sendBotMsg(msg.content);
+			chat(msg.content);
 
 			// Log
 			logger.info("Received a message");

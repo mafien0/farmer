@@ -1,4 +1,4 @@
-import { actionUpdate } from "@/discord/updateService.js";
+import { actionUpdate, messageUpdate } from "@/discord/updateService.js";
 import { bot } from "@/mineflayer/bot.js";
 
 export function stop() {
@@ -70,6 +70,7 @@ export function sneak(isSneaking) {
 }
 
 export function chat(message) {
+	messageUpdate(`Send message: ${message}`);
 	bot.chat(message);
 	return true;
 }
