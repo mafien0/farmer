@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch: #
+  workflow_dispatch:
 
 jobs:
   codespell:
@@ -25,8 +25,29 @@ jobs:
           python -m pip install --upgrade pip
           pip install codespell
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Check spelling with codespell
-        run: codespell --ignore-words=codespell.txt || exit 1
+
+      # On PRs — just check and fail if there are mistakes
+      - name: Check spelling (PR)
+        if: github.event_name == 'pull_request'
+        run: codespell
+
+      # On push to main — fix and open a PR
+      - name: Fix spelling (push)
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: codespell -w
+
+      - name: Create Pull Request
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "fix: correct spelling mistakes"
+          title: "fix: correct spelling mistakes"
+          body: |
+            Automated spelling fixes by codespell.
+          branch: fix/codespell
+          delete-branch: true
+          labels: spelling
 
   misspell:
     name: Check spelling with misspell
