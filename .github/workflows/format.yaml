@@ -1,6 +1,6 @@
 # This workflow formats the code with `deno fmt` task and `deno lint:fix` task
 
-name: Code formatter
+name: Code Formatter
 on: workflow_dispatch
 
 permissions:
