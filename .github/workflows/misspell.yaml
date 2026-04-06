@@ -11,6 +11,9 @@ jobs:
   codespell:
     name: Check spelling with codespell
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     strategy:
       matrix:
         python-version: ["3.13"]
