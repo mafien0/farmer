@@ -51,7 +51,7 @@ export function connect() {
 // Used in a discord command
 export function disconnect() {
 	if (!bot) return true; // Already disconnected
-	logger.info("Quiting...");
+	logger.info("Quitting...");
 	shouldReconnect = false;
 	bot.quit();
 	bot = null;
@@ -63,7 +63,7 @@ export function disconnect() {
 export function reconnect() {
 	logger.info("Reconnecting...");
 	// Try to end the bot
-	// It will automaticly reconnect because of `on("end")` listener
+	// It will automatically reconnect because of `on("end")` listener
 	try {
 		bot.quit("reconnect");
 	} catch {

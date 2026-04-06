@@ -80,7 +80,7 @@ export async function execute(interaction) {
 	if (subcommand === "remove-all") {
 		if (Schedule.removeAll()) {
 			await interaction.reply({
-				content: "Succesfully removed all schedules",
+				content: "Successfully removed all schedules",
 				flags: MessageFlags.Ephemeral,
 			});
 		} else {
@@ -96,7 +96,7 @@ export async function execute(interaction) {
 	if (subcommand === "disable-all") {
 		if (Schedule.disableAll()) {
 			await interaction.reply({
-				content: "Succesfully disabled all schedules",
+				content: "Successfully disabled all schedules",
 				flags: MessageFlags.Ephemeral,
 			});
 		} else {
@@ -112,7 +112,7 @@ export async function execute(interaction) {
 	if (subcommand === "enable-all") {
 		if (Schedule.enableAll()) {
 			await interaction.reply({
-				content: "Succesfully enabled all schedules",
+				content: "Successfully enabled all schedules",
 				flags: MessageFlags.Ephemeral,
 			});
 		} else {

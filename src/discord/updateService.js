@@ -12,7 +12,7 @@ function sendUpdateMsg(message) {
 }
 
 export const connectUpdate = () => {
-	sendUpdateMsg(createSuccess("Connected", "Succesfully connected"));
+	sendUpdateMsg(createSuccess("Connected", "Successfully connected"));
 	logger.info("Connect update");
 };
 
