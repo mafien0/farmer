@@ -1,6 +1,6 @@
 # This workflow tries to build a docker image
 
-name: Docker build check
+name: Docker Build Check
 on:
   push:
     branches: [main]
