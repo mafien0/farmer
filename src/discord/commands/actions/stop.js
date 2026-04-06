@@ -8,7 +8,7 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction) {
 	if (stop()) {
 		await interaction.reply({
-			content: "Succesfully stoped all the actions",
+			content: "Successfully stopped all the actions",
 			flags: MessageFlags.Ephemeral,
 		});
 	} else {

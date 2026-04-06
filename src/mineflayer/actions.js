@@ -42,7 +42,7 @@ export function dig() {
 }
 
 export function jump(continuously) {
-	actionUpdate(continuously ? "Jumping continuosly" : "Jumped");
+	actionUpdate(continuously ? "Jumping continuously" : "Jumped");
 	bot.setControlState("jump", true);
 	if (!continuously) {
 		setTimeout(() => bot.setControlState("jump", false), 50);
